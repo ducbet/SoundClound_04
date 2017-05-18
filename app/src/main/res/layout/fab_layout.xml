@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_marginRight="@dimen/fab_margin_right"
+             app:layout_anchor="@+id/image_view_artwork"
+             app:layout_anchorGravity="right|bottom">
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_more"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/fab_margin_left"
+        android:layout_marginTop="@dimen/fab_margin_top"
+        android:src="@drawable/ic_more_vert_white_24px"
+        />
+
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/coordinator_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible">
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_download"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/fab_margin_top"
+            android:src="@drawable/ic_file_download_white_24px"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_watch_later"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/fab_margin_left"
+            android:src="@drawable/ic_add_white_24px"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_home"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/fab_margin_left"
+            android:layout_marginTop="@dimen/fab_margin_2_top"
+            android:src="@drawable/ic_home_white_24px"/>
+
+    </android.support.design.widget.CoordinatorLayout>
+</FrameLayout>

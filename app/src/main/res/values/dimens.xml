@@ -14,4 +14,15 @@
     <dimen name="dp_30">30dp</dimen>
     <dimen name="dp_18">18dp</dimen>
     <dimen name="dp_0">0dp</dimen>
+    <dimen name="fab_margin_left">70dp</dimen>
+    <dimen name="fab_margin_top">70dp</dimen>
+    <dimen name="fab_margin_2_top">140dp</dimen>
+    <dimen name="text_view_seperate">1dp</dimen>
+    <dimen name="track_info_height">100dp</dimen>
+    <dimen name="track_info_text_size">20sp</dimen>
+    <dimen name="recycler_view_comment_height">100dp</dimen>
+    <dimen name="waveform_margin">8dp</dimen>
+    <dimen name="fab_margin_right">16dp</dimen>
+    <dimen name="text_view_weight_seperate_comment">200dp</dimen>
+    <dimen name="track_status_height">30dp</dimen>
 </resources>

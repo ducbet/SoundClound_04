@@ -30,4 +30,7 @@ public interface SoundCloundService {
     @GET("users/{id}")
     Call<UserModel> getUser(@Path("id") int id, @Query("client_id") String API_KEY);
 
+    @GET("/tracks/{id}/comments")
+    Call<ArrayList<CommentModel>> getCommentOfTrack(@Path("id") int id, @Query("client_id") String API_KEY);
+
 }

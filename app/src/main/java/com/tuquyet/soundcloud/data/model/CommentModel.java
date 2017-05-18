@@ -17,6 +17,9 @@ public class CommentModel {
     @SerializedName("body")
     private String mBody;
 
+    @SerializedName("user")
+    private UserModel mUser;
+
     @SerializedName("user_id")
     private int mUserId;
 
@@ -35,6 +38,10 @@ public class CommentModel {
     public String getBody() {
         if (mBody == null) return "";
         return mBody;
+    }
+
+    public UserModel getUser() {
+        return mUser;
     }
 
     public int getUserId() {

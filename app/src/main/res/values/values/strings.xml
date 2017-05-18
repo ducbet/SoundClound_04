@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">SoundCloud</string>
+    <string name="track_info">BLANK SPACE</string>
+    <string name="username_comment">username</string>
+    <string name="body_comment">body</string>
+    <string name="time_created_comment">create at</string>
+</resources>
+

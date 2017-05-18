@@ -2,6 +2,8 @@ package com.tuquyet.soundcloud.data.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 /**
  * Created by tmd on 13/05/2017.
  */
@@ -76,6 +78,17 @@ public class TrackModel {
 
     @SerializedName("favoritings_count")
     private int mFavoritingsCount;
+
+    private List<CommentModel> mListComments;
+
+    public void setListComments(List<CommentModel> listComments) {
+        mListComments = listComments;
+    }
+
+    public List<CommentModel> getListComments() {
+        return mListComments;
+    }
+
 
     public int getID() {
         return mID;
@@ -177,4 +190,5 @@ public class TrackModel {
     public int getFavoritingsCount() {
         return mFavoritingsCount;
     }
+
 }

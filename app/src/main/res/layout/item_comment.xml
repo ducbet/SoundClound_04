@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="@dimen/recycler_view_comment_height"
-              android:background="@android:color/white"
-              android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/recycler_view_comment_height"
+    android:background="@android:color/white"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,11 +13,11 @@
         android:layout_weight="1"
         android:orientation="horizontal">
 
-        <com.tuquyet.soundcloud.data.model.SquareImageView
+        <com.tuquyet.soundcloud.util.widget.SquareImageView
             android:id="@+id/square_image_view_avartar"
             android:layout_width="0dp"
             android:layout_height="@dimen/recycler_view_comment_height"
-            android:src="@mipmap/ic_launcher"/>
+            android:src="@mipmap/ic_launcher" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -32,7 +32,7 @@
                 android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:text="@string/username_comment"
-                android:textColor="@android:color/black"/>
+                android:textColor="@android:color/black" />
 
             <TextView
                 android:id="@+id/text_view_body_comment"
@@ -41,7 +41,7 @@
                 android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:text="@string/body_comment"
-                android:textColor="@android:color/black"/>
+                android:textColor="@android:color/black" />
 
             <TextView
                 android:id="@+id/text_view_time_created_comment"
@@ -49,8 +49,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
-                android:text="@string/time_created_comment"
-                />
+                android:text="@string/time_created_comment" />
         </LinearLayout>
 
     </LinearLayout>
@@ -59,5 +58,5 @@
         android:layout_width="@dimen/text_view_weight_seperate_comment"
         android:layout_height="@dimen/dp_1"
         android:layout_gravity="center_horizontal"
-        android:background="@color/colorAccent"/>
+        android:background="@color/colorAccent" />
 </LinearLayout>

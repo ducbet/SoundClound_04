@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:background="@color/colorWaveform"
-              android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorWaveform"
+    android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/linear_layout_waveform"
@@ -20,7 +20,7 @@
             android:text="@string/track_info"
             android:textColor="@android:color/black"
             android:textSize="@dimen/track_info_text_size"
-            android:textStyle="bold|italic"/>
+            android:textStyle="bold|italic" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -36,15 +36,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@android:color/darker_gray"
-                android:progressDrawable="@drawable/custom_progressbar"
-                />
+                android:progressDrawable="@drawable/custom_progressbar" />
 
             <SeekBar
                 android:id="@+id/seek_bar_waveform"
                 style="@style/HomeSeekbar"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                />
+                android:layout_height="match_parent" />
         </RelativeLayout>
     </LinearLayout>
 
@@ -67,16 +65,14 @@
                 style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:progressDrawable="@drawable/custom_progressbar"
-                />
+                android:progressDrawable="@drawable/custom_progressbar" />
 
             <ImageView
                 android:id="@+id/image_view_waveform_small"
                 style="@style/HomeSeekbar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="fitXY"
-                />
+                android:scaleType="fitXY" />
         </RelativeLayout>
 
         <ImageView
@@ -85,7 +81,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@color/colorAccent"
-            android:src="@drawable/ic_play_arrow_white_24px"/>
+            android:src="@drawable/ic_play_arrow_white_24px" />
 
         <ImageView
             android:id="@+id/image_view_previous"
@@ -93,7 +89,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="#FF9800"
-            android:src="@drawable/ic_skip_previous_white_24px"/>
+            android:src="@drawable/ic_skip_previous_white_24px" />
 
         <ImageView
             android:id="@+id/image_view_next"
@@ -101,7 +97,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="#FF9800"
-            android:src="@drawable/ic_skip_next_white_24px"/>
+            android:src="@drawable/ic_skip_next_white_24px" />
 
     </LinearLayout>
 

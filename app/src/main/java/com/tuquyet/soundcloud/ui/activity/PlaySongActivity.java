@@ -30,6 +30,7 @@ import static android.view.View.GONE;
 import static com.tuquyet.soundcloud.ui.activity.MainActivity.API_KEY;
 
 public class PlaySongActivity extends AppCompatActivity {
+
     public static final String TAG = "PlaySongActivity";
     private SoundCloundService mService;
     private TrackModel mTrackModel;

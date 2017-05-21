@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.tuquyet.soundcloud.R;
 import com.tuquyet.soundcloud.data.model.CommentModel;
-import com.tuquyet.soundcloud.data.model.SquareImageView;
+import com.tuquyet.soundcloud.util.widget.SquareImageView;
 
 import java.util.List;
 

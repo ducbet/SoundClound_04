@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              tools:context="com.tuquyet.soundcloud.ui.activity.MainActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.tuquyet.soundcloud.ui.activity.MainActivity">
 
     <ImageView
         android:id="@+id/image_soundcloud"
         android:layout_width="@dimen/dp_70"
         android:layout_height="@dimen/dp_50"
         android:layout_margin="@dimen/dp_5"
-        android:src="@drawable/soundcloud"/>
+        android:src="@drawable/soundcloud" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,7 +24,7 @@
             android:layout_width="@dimen/dp_75"
             android:layout_height="@dimen/dp_75"
             android:layout_margin="@dimen/dp_5"
-            android:src="@mipmap/ic_launcher"/>
+            android:src="@mipmap/ic_launcher" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -37,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/dp_5"
                 android:textSize="@dimen/dp_30"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -50,7 +50,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dp_5"
                     android:textSize="@dimen/dp_20"
-                    android:textStyle="italic"/>
+                    android:textStyle="italic" />
 
                 <TextView
                     android:id="@+id/text_my_country"
@@ -58,7 +58,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dp_10"
                     android:textSize="@dimen/dp_20"
-                    android:textStyle="italic"/>
+                    android:textStyle="italic" />
 
             </LinearLayout>
 
@@ -70,13 +70,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorOrange"
-        app:tabGravity="fill"
-        />
+        app:tabGravity="fill" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/view_pager"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        />
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

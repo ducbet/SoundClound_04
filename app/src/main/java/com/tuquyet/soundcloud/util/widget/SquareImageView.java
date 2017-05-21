@@ -1,4 +1,4 @@
-package com.tuquyet.soundcloud.data.model;
+package com.tuquyet.soundcloud.util.widget;
 
 import android.content.Context;
 import android.support.annotation.Nullable;

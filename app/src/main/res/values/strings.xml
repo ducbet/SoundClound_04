@@ -10,4 +10,7 @@
     <string name="playlists">Playlists</string>
     <string name="follower">Follower</string>
     <string name="following">Following</string>
+    <string name="username_comment">username</string>
+    <string name="body_comment">body</string>
+    <string name="time_created_comment">create at</string>
 </resources>

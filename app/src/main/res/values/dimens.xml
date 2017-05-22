@@ -15,4 +15,6 @@
     <dimen name="dp_18">18dp</dimen>
     <dimen name="dp_0">0dp</dimen>
     <dimen name="dp_15">15dp</dimen>
+    <dimen name="dp_1">1dp</dimen>
+    <dimen name="dp_8">8dp</dimen>
 </resources>

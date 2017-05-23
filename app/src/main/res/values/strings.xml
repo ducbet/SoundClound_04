@@ -10,4 +10,5 @@
     <string name="playlists">Playlists</string>
     <string name="follower">Follower</string>
     <string name="following">Following</string>
+    <string name="user_info">Infomation</string>
 </resources>

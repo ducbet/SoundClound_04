@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.tuquyet.soundcloud.R;
 import com.tuquyet.soundcloud.data.model.CommentModel;
+import com.tuquyet.soundcloud.data.model.NavigationSongBar;
 import com.tuquyet.soundcloud.data.model.TrackModel;
 import com.tuquyet.soundcloud.service.ServiceGenerator;
 import com.tuquyet.soundcloud.service.SoundCloundService;
@@ -23,7 +24,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static android.view.View.GONE;
 import static com.tuquyet.soundcloud.ui.activity.MainActivity.API_KEY;
 
 public class PlaySongActivity extends AppCompatActivity {
@@ -35,6 +35,7 @@ public class PlaySongActivity extends AppCompatActivity {
     private CommentAdapter mCommentAdapter;
     private RecyclerView mRecComments;
     private ImageView mImgArtwork;
+    private NavigationSongBar mNavigationSongBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +99,9 @@ public class PlaySongActivity extends AppCompatActivity {
                     pullComment(mTrackModel);
 
                     loadImage(mTrackModel.getArtworkUrl(), mImgArtwork);
+
+                    mNavigationSongBar = (NavigationSongBar) findViewById(R.id.navigation_song_play_song_activity);
+                    mNavigationSongBar.setTrackModel(mTrackModel);
                 }
             }
 

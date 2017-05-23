@@ -80,6 +80,11 @@
             android:layout_height="@dimen/dp_1"
             android:background="@android:color/white"/>
 
+        <com.tuquyet.soundcloud.data.model.NavigationSongBar
+            android:layout_width="match_parent"
+            android:id="@+id/navigation_song_play_song_activity"
+            android:layout_height="wrap_content"/>
+
     </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>

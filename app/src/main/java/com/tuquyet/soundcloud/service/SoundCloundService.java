@@ -6,6 +6,7 @@ import com.tuquyet.soundcloud.data.model.TrackModel;
 import com.tuquyet.soundcloud.data.model.UserModel;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -33,4 +34,6 @@ public interface SoundCloundService {
     @GET("/tracks/{id}/comments")
     Call<ArrayList<CommentModel>> getCommentOfTrack(@Path("id") int id, @Query("client_id") String API_KEY);
 
+    @GET("/me/tracks")
+    Call<List<TrackModel>> getMyTrack(@Query("oauth_token") String API_KEY);
 }

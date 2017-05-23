@@ -1,17 +1,17 @@
 package com.tuquyet.soundcloud.ui.adapter;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.tuquyet.soundcloud.R;
+import com.tuquyet.soundcloud.ui.activity.TracksActivity;
 import com.tuquyet.soundcloud.ui.item.ItemClickListener;
 import com.tuquyet.soundcloud.ui.item.PlaylistItem;
-
 
 import java.util.List;
 
@@ -84,7 +84,8 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
         public void onClick(View v) {
             PlaylistItem item = mPlaylistItems.get(getAdapterPosition());
             //Do something when item is clicked
-            Toast.makeText(v.getContext(), item.getPlaylistTitle(), Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(v.getContext(), TracksActivity.class);
+            v.getContext().startActivity(intent);
         }
     }
 }

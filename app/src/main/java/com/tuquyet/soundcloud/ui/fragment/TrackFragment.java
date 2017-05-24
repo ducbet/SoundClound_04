@@ -1,6 +1,5 @@
 package com.tuquyet.soundcloud.ui.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -20,8 +19,6 @@ import java.util.ArrayList;
  * Created by tuquyet on 22/05/2017.
  */
 public class TrackFragment extends Fragment {
-    private Context context;
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,

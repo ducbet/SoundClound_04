@@ -1,5 +1,6 @@
 package com.tuquyet.soundcloud.ui.adapter;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tuquyet.soundcloud.R;
+import com.tuquyet.soundcloud.ui.activity.PlaySongActivity;
 import com.tuquyet.soundcloud.ui.item.ItemClickListener;
 import com.tuquyet.soundcloud.ui.item.TrackItem;
 
@@ -80,7 +82,8 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.ViewHolder> 
         public void onClick(View v) {
             TrackItem item = mTrackItems.get(getAdapterPosition());
             //Do something when item is clicked
-            Toast.makeText(v.getContext(), item.getTrackDate(), Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(v.getContext(), PlaySongActivity.class);
+            v.getContext().startActivity(intent);
         }
     }
 }

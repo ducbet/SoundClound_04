@@ -1,6 +1,7 @@
 package com.tuquyet.soundcloud.data.model;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -19,6 +20,11 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.tuquyet.soundcloud.R;
+import com.tuquyet.soundcloud.service.PlayBackGroundService;
+
+import static com.tuquyet.soundcloud.service.PlayBackGroundService.ACTION_PLAY_PAUSE;
+import static com.tuquyet.soundcloud.service.PlayBackGroundService.ACTION_SEEK;
+import static com.tuquyet.soundcloud.service.PlayBackGroundService.EXTRA_SEEK;
 
 /**
  * Created by tmd on 16/05/2017.
@@ -30,12 +36,14 @@ public class NavigationSongBar extends LinearLayout implements View.OnClickListe
     private TrackModel mTrackModel;
     private View mRootView;
     private ImageView mImgWaveformSmall;
+    private ImageView mImgPlay;
     private TextView mTxtTrackInfo;
     private SeekBar mSeekBar;
     private ProgressBar mProgressBar, mProgressBarSmall;
     private LinearLayout mRelativeLayoutWaveform;
     private boolean mIsShowingWaveform = true;
     private Animation mAnimationShowWaveform, mAnimationHideWaveform;
+    private Intent mIntent;
 
     public NavigationSongBar(Context context) {
         super(context);
@@ -76,6 +84,7 @@ public class NavigationSongBar extends LinearLayout implements View.OnClickListe
         mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
         mProgressBarSmall = (ProgressBar) findViewById(R.id.progress_bar_small);
         mImgWaveformSmall = ((ImageView) mRootView.findViewById(R.id.image_view_waveform_small));
+        mImgPlay = (ImageView) findViewById(R.id.image_view_play);
         findViewById(R.id.relative_layout_small_waveform).setOnClickListener(this);
         findViewById(R.id.image_view_previous).setOnClickListener(this);
         findViewById(R.id.image_view_play).setOnClickListener(this);
@@ -93,6 +102,9 @@ public class NavigationSongBar extends LinearLayout implements View.OnClickListe
             case R.id.image_view_previous:
                 break;
             case R.id.image_view_play:
+                mIntent = new Intent(mContext, PlayBackGroundService.class);
+                mIntent.setAction(ACTION_PLAY_PAUSE);
+                mContext.startService(mIntent);
                 break;
             case R.id.image_view_next:
                 break;
@@ -112,6 +124,10 @@ public class NavigationSongBar extends LinearLayout implements View.OnClickListe
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 mProgressBar.setProgress(progress);
                 mProgressBarSmall.setProgress(progress);
+                mIntent = new Intent(mContext, PlayBackGroundService.class);
+                mIntent.setAction(ACTION_SEEK);
+                mIntent.putExtra(EXTRA_SEEK, seekBar.getProgress());
+                mContext.startService(mIntent);
             }
 
             @Override

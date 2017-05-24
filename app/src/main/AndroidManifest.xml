@@ -20,6 +20,8 @@
         </activity>
         <activity android:name=".ui.activity.PlaySongActivity"/>
         <activity android:name=".ui.activity.TracksActivity"/>
+
+        <service android:name=".service.PlayBackGroundService"/>
     </application>
 
 </manifest>

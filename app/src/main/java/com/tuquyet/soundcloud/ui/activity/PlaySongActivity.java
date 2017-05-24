@@ -1,5 +1,6 @@
 package com.tuquyet.soundcloud.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,6 +14,7 @@ import com.tuquyet.soundcloud.R;
 import com.tuquyet.soundcloud.data.model.CommentModel;
 import com.tuquyet.soundcloud.data.model.NavigationSongBar;
 import com.tuquyet.soundcloud.data.model.TrackModel;
+import com.tuquyet.soundcloud.service.PlayBackGroundService;
 import com.tuquyet.soundcloud.service.ServiceGenerator;
 import com.tuquyet.soundcloud.service.SoundCloundService;
 import com.tuquyet.soundcloud.ui.adapter.CommentAdapter;
@@ -24,6 +26,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.tuquyet.soundcloud.service.PlayBackGroundService.ACTION_SELECT_SONG;
+import static com.tuquyet.soundcloud.service.PlayBackGroundService.EXTRA_SONG_ID;
+import static com.tuquyet.soundcloud.service.PlayBackGroundService.EXTRA_TRACK;
 import static com.tuquyet.soundcloud.ui.activity.MainActivity.API_KEY;
 
 public class PlaySongActivity extends AppCompatActivity {
@@ -35,7 +40,7 @@ public class PlaySongActivity extends AppCompatActivity {
     private CommentAdapter mCommentAdapter;
     private RecyclerView mRecComments;
     private ImageView mImgArtwork;
-    private NavigationSongBar mNavigationSongBar;
+    private Intent mIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,8 +105,7 @@ public class PlaySongActivity extends AppCompatActivity {
 
                     loadImage(mTrackModel.getArtworkUrl(), mImgArtwork);
 
-                    mNavigationSongBar = (NavigationSongBar) findViewById(R.id.navigation_song_play_song_activity);
-                    mNavigationSongBar.setTrackModel(mTrackModel);
+                    sendTrackToService();
                 }
             }
 
@@ -110,6 +114,14 @@ public class PlaySongActivity extends AppCompatActivity {
                 Toast.makeText(PlaySongActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void sendTrackToService() {
+        mIntent = new Intent(this, PlayBackGroundService.class);
+        mIntent.setAction(ACTION_SELECT_SONG);
+        mIntent.putExtra(EXTRA_TRACK, mTrackModel);
+        mIntent.putExtra(EXTRA_SONG_ID, R.raw.gui_anh_xa_nho_bich_phuong);
+        startService(mIntent);
     }
 
     public void removeTittleBar() {

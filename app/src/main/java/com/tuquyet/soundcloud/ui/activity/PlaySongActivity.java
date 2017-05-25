@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -26,13 +27,15 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.tuquyet.soundcloud.service.PlayBackGroundService.ACTION_SELECT_SONG;
-import static com.tuquyet.soundcloud.service.PlayBackGroundService.EXTRA_SONG_ID;
-import static com.tuquyet.soundcloud.service.PlayBackGroundService.EXTRA_TRACK;
 import static com.tuquyet.soundcloud.ui.activity.MainActivity.API_KEY;
+import static com.tuquyet.soundcloud.ui.adapter.TrackAdapter.BUNDLE_LIST_TRACKS;
+import static com.tuquyet.soundcloud.ui.adapter.TrackAdapter.LIST_TRACKS;
+import static com.tuquyet.soundcloud.ui.adapter.TrackAdapter.SELECTED_TRACK;
 
 public class PlaySongActivity extends AppCompatActivity {
     public static final String TAG = "MY_PlaySongActivity";
     private SoundCloundService mService;
+    private List<TrackModel> mListTracks;
     private TrackModel mTrackModel;
     private int mTrackId = 13158665;
     private List<CommentModel> mListComments;
@@ -94,32 +97,22 @@ public class PlaySongActivity extends AppCompatActivity {
     }
 
     private void getTrack() {
-        mService.getTrack(mTrackId, API_KEY).enqueue(new Callback<TrackModel>() {
-            @Override
-            public void onResponse(Call<TrackModel> call, Response<TrackModel> response) {
-                if (response != null) {
-                    mTrackModel = response.body();
-                    String url;
-                    pullComment(mTrackModel);
+        mIntent = getIntent();
+        if (mIntent != null) {
+            Bundle bundle = mIntent.getBundleExtra(BUNDLE_LIST_TRACKS);
+            mListTracks = (List<TrackModel>) bundle.getSerializable(LIST_TRACKS);
+            mTrackModel = mListTracks.get(bundle.getInt(SELECTED_TRACK, 0));
+            pullComment(mTrackModel);
+            loadImage(mTrackModel.getArtworkUrl(), mImgArtwork);
 
-                    loadImage(mTrackModel.getArtworkUrl(), mImgArtwork);
-
-                    sendTrackToService();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<TrackModel> call, Throwable t) {
-                Toast.makeText(PlaySongActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+            sendListTrackToService(bundle);
+        }
     }
 
-    private void sendTrackToService() {
+    private void sendListTrackToService(Bundle bundle) {
         mIntent = new Intent(this, PlayBackGroundService.class);
         mIntent.setAction(ACTION_SELECT_SONG);
-        mIntent.putExtra(EXTRA_TRACK, mTrackModel);
-        mIntent.putExtra(EXTRA_SONG_ID, R.raw.gui_anh_xa_nho_bich_phuong);
+        mIntent.putExtra(BUNDLE_LIST_TRACKS, bundle);
         startService(mIntent);
     }
 

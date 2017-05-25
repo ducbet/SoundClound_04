@@ -12,7 +12,6 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.tuquyet.soundcloud.R;
 import com.tuquyet.soundcloud.data.model.CommentModel;
-import com.tuquyet.soundcloud.data.model.NavigationSongBar;
 import com.tuquyet.soundcloud.data.model.TrackModel;
 import com.tuquyet.soundcloud.service.PlayBackGroundService;
 import com.tuquyet.soundcloud.service.ServiceGenerator;

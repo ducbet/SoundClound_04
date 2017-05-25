@@ -1,11 +1,13 @@
-package com.tuquyet.soundcloud.data.model;
+package com.tuquyet.soundcloud.util.widget;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -20,18 +22,30 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.tuquyet.soundcloud.R;
+import com.tuquyet.soundcloud.data.model.TrackModel;
 import com.tuquyet.soundcloud.service.PlayBackGroundService;
+import com.tuquyet.soundcloud.service.TrackReceiver;
 
+import static com.tuquyet.soundcloud.service.PlayBackGroundService.ACTION_GET_SONG_STATUS;
 import static com.tuquyet.soundcloud.service.PlayBackGroundService.ACTION_PLAY_PAUSE;
 import static com.tuquyet.soundcloud.service.PlayBackGroundService.ACTION_SEEK;
+import static com.tuquyet.soundcloud.service.PlayBackGroundService.EXTRA_RETURN_TRACK;
 import static com.tuquyet.soundcloud.service.PlayBackGroundService.EXTRA_SEEK;
+import static com.tuquyet.soundcloud.service.PlayBackGroundService.EXTRA_SONG_STATUS;
+import static com.tuquyet.soundcloud.service.TrackReceiver.ACTION_PAUSE;
+import static com.tuquyet.soundcloud.service.TrackReceiver.ACTION_PLAY;
+import static com.tuquyet.soundcloud.service.TrackReceiver.ACTION_RETURN_SONG_STATUS;
+import static com.tuquyet.soundcloud.service.TrackReceiver.ACTION_RETURN_TRACK;
+import static com.tuquyet.soundcloud.service.TrackReceiver.ACTION_UPDATE_PROGRESSBAR;
 
 /**
  * Created by tmd on 16/05/2017.
  */
-public class NavigationSongBar extends LinearLayout implements View.OnClickListener {
+public class NavigationSongBar extends LinearLayout
+        implements View.OnClickListener, TrackReceiver.OnReceiverListener {
 
     public static final String TAG = "MY_NavigationSongBar";
+    public static final int SEEK_BAR_MAX = 1000;
     private Context mContext;
     private TrackModel mTrackModel;
     private View mRootView;
@@ -44,6 +58,7 @@ public class NavigationSongBar extends LinearLayout implements View.OnClickListe
     private boolean mIsShowingWaveform = true;
     private Animation mAnimationShowWaveform, mAnimationHideWaveform;
     private Intent mIntent;
+    private TrackReceiver mTrackReceiver;
 
     public NavigationSongBar(Context context) {
         super(context);
@@ -72,28 +87,38 @@ public class NavigationSongBar extends LinearLayout implements View.OnClickListe
         return mTrackModel;
     }
 
-    public void setTrackModel(TrackModel trackModel) {
-        this.mTrackModel = trackModel;
-        loadWaveform();
-        loadTrackInfo();
-    }
-
     private void initViews() {
         mRootView = inflate(mContext, R.layout.layout_navigation_song_bar, this);
         mRelativeLayoutWaveform = (LinearLayout) findViewById(R.id.linear_layout_waveform);
         mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
+        mProgressBar.setMax(SEEK_BAR_MAX);
         mProgressBarSmall = (ProgressBar) findViewById(R.id.progress_bar_small);
+        mProgressBarSmall.setMax(SEEK_BAR_MAX);
         mImgWaveformSmall = ((ImageView) mRootView.findViewById(R.id.image_view_waveform_small));
         mImgPlay = (ImageView) findViewById(R.id.image_view_play);
+
         findViewById(R.id.relative_layout_small_waveform).setOnClickListener(this);
         findViewById(R.id.image_view_previous).setOnClickListener(this);
         findViewById(R.id.image_view_play).setOnClickListener(this);
         findViewById(R.id.image_view_next).setOnClickListener(this);
 
+        createBroadcast();
         createSeekBar();
         createShowWaveformAnim();
         createHideWaveformAnim();
         autoHideWaveform();
+    }
+
+    private void createBroadcast() {
+        mTrackReceiver = new TrackReceiver(this);
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(ACTION_SEEK);
+        intentFilter.addAction(ACTION_PAUSE);
+        intentFilter.addAction(ACTION_PLAY);
+        intentFilter.addAction(ACTION_UPDATE_PROGRESSBAR);
+        intentFilter.addAction(ACTION_RETURN_TRACK);
+        intentFilter.addAction(ACTION_RETURN_SONG_STATUS);
+        mContext.registerReceiver(mTrackReceiver, intentFilter);
     }
 
     @Override
@@ -119,6 +144,7 @@ public class NavigationSongBar extends LinearLayout implements View.OnClickListe
 
     private void createSeekBar() {
         mSeekBar = (SeekBar) findViewById(R.id.seek_bar_waveform);
+        mSeekBar.setMax(SEEK_BAR_MAX);
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -140,11 +166,16 @@ public class NavigationSongBar extends LinearLayout implements View.OnClickListe
         });
     }
 
+    private void loadSongStatus() {
+        mIntent = new Intent(mContext, PlayBackGroundService.class);
+        mIntent.setAction(ACTION_GET_SONG_STATUS);
+        mContext.startService(mIntent);
+    }
+
     private void loadTrackInfo() {
-        if (mTrackModel == null) return;
         mTxtTrackInfo = (TextView) findViewById(R.id.text_view_track_info);
         String trackInfo = mTrackModel.getTitle() + "\n" +
-            mTrackModel.getDescription();
+                mTrackModel.getDescription();
         mTxtTrackInfo.setText(trackInfo);
     }
 
@@ -159,25 +190,24 @@ public class NavigationSongBar extends LinearLayout implements View.OnClickListe
     }
 
     private void loadWaveform() {
-        if (mTrackModel == null) return;
         String url = mTrackModel.getWaveformUrl();
         if (url.isEmpty()) return;
         Glide.with(mContext)
-            .load(mTrackModel.getWaveformUrl())
-            .centerCrop()
-            .error(R.mipmap.ic_launcher)
-            .placeholder(R.mipmap.ic_launcher_round)
-            .into(new SimpleTarget<GlideDrawable>() {
-                @Override
-                public void onResourceReady(GlideDrawable resource,
-                                            GlideAnimation<? super GlideDrawable> glideAnimation) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                        mSeekBar.setBackground(resource);
-                        mImgWaveformSmall.setImageResource(R.drawable.bg_waveform);
-                        invalidate();
+                .load(mTrackModel.getWaveformUrl())
+                .centerCrop()
+                .error(R.mipmap.ic_launcher)
+                .placeholder(R.mipmap.ic_launcher_round)
+                .into(new SimpleTarget<GlideDrawable>() {
+                    @Override
+                    public void onResourceReady(GlideDrawable resource,
+                                                GlideAnimation<? super GlideDrawable> glideAnimation) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                            mSeekBar.setBackground(resource);
+                            mImgWaveformSmall.setImageDrawable(resource);
+                            invalidate();
+                        }
                     }
-                }
-            });
+                });
     }
 
     private void createHideWaveformAnim() {
@@ -228,5 +258,44 @@ public class NavigationSongBar extends LinearLayout implements View.OnClickListe
             mRelativeLayoutWaveform.startAnimation(mAnimationShowWaveform);
             mIsShowingWaveform = true;
         }
+    }
+
+    @Override
+    public void onPause(Intent intent) {
+        mImgPlay.setImageResource(R.drawable.ic_pause_white_24px);
+    }
+
+    @Override
+    public void onPlay(Intent intent) {
+        mImgPlay.setImageResource(R.drawable.ic_play_arrow_white_24px);
+    }
+
+    @Override
+    public void onUpdateProgressBar(Intent intent) {
+        mProgressBar.setProgress(intent.getIntExtra(ACTION_UPDATE_PROGRESSBAR, 0));
+        mProgressBarSmall.setProgress(intent.getIntExtra(ACTION_UPDATE_PROGRESSBAR, 0));
+    }
+
+    @Override
+    public void onReturnTrackFromService(Intent intent) {
+        this.mTrackModel = (TrackModel) intent.getSerializableExtra(EXTRA_RETURN_TRACK);
+        loadWaveform();
+        loadTrackInfo();
+        loadSongStatus();
+    }
+
+    @Override
+    public void onReturnSongStatus(Intent intent) {
+        if (intent.getBooleanExtra(EXTRA_SONG_STATUS, true)) {
+            mImgPlay.setImageResource(R.drawable.ic_pause_white_24px);
+        } else {
+            mImgPlay.setImageResource(R.drawable.ic_play_arrow_white_24px);
+        }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        mContext.unregisterReceiver(mTrackReceiver);
     }
 }

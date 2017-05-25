@@ -1,5 +1,6 @@
 package com.tuquyet.soundcloud.ui.adapter;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -7,35 +8,38 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.tuquyet.soundcloud.R;
+import com.tuquyet.soundcloud.data.model.TrackModel;
 import com.tuquyet.soundcloud.ui.activity.PlaySongActivity;
-import com.tuquyet.soundcloud.ui.item.ItemClickListener;
-import com.tuquyet.soundcloud.ui.item.TrackItem;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by tuquyet on 22/05/2017.
  */
 public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.ViewHolder> {
-    private List<TrackItem> mTrackItems;
 
-    public TrackAdapter(List<TrackItem> trackItems) {
+    private static final String LIST_TRACKS = "LIST_TRACKS";
+    private static final String SELECTED_TRACK = "SELECTED_TRACK";
+    private List<TrackModel> mTrackItems;
+
+    public TrackAdapter(List<TrackModel> trackItems) {
         mTrackItems = trackItems;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
-            .inflate(R.layout.item_track, parent, false);
+                .inflate(R.layout.item_track, parent, false);
         return new ViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        TrackItem trackItem = mTrackItems.get(position);
+        TrackModel trackItem = mTrackItems.get(position);
         holder.bindData(trackItem);
     }
 
@@ -50,16 +54,13 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.ViewHolder> 
         private TextView mTextTrackUser;
         private TextView mTextTrackDate;
         private ImageView mImageTrackWaveform;
-        private ItemClickListener mItemClickListener;
+        private Context mContext;
 
         public ViewHolder(View itemView) {
             super(itemView);
+            mContext = itemView.getContext();
             initViews();
             itemView.setOnClickListener(this);
-        }
-
-        public void setItemClickListener(ItemClickListener item) {
-            this.mItemClickListener = item;
         }
 
         private void initViews() {
@@ -70,20 +71,30 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.ViewHolder> 
             mImageTrackWaveform = (ImageView) itemView.findViewById(R.id.image_track_waveform);
         }
 
-        public void bindData(TrackItem trackItem) {
-            mImageTrackAvatar.setImageResource(trackItem.getTrackAvatar());
-            mTextTrackTitle.setText(trackItem.getTrackTitle());
-            mTextTrackUser.setText(trackItem.getTrackUser());
-            mTextTrackDate.setText(trackItem.getTrackDate());
-            mImageTrackWaveform.setImageResource(trackItem.getTrackWaveform());
+        public void bindData(TrackModel trackItem) {
+            if (trackItem != null) {
+                loadAvatar(trackItem);
+                mTextTrackTitle.setText(trackItem.getTitle());
+                mTextTrackDate.setText(trackItem.getCreatedAt());
+            }
         }
 
         @Override
         public void onClick(View v) {
-            TrackItem item = mTrackItems.get(getAdapterPosition());
             //Do something when item is clicked
             Intent intent = new Intent(v.getContext(), PlaySongActivity.class);
+            intent.putExtra(LIST_TRACKS, (Serializable) mTrackItems);
+            intent.putExtra(SELECTED_TRACK, getAdapterPosition());
             v.getContext().startActivity(intent);
+        }
+
+        private void loadAvatar(TrackModel trackItem) {
+            Glide.with(mContext)
+                    .load(trackItem.getArtworkUrl())
+                    .centerCrop()
+                    .error(R.mipmap.ic_launcher)
+                    .placeholder(R.mipmap.ic_launcher_round)
+                    .into(mImageTrackAvatar);
         }
     }
 }

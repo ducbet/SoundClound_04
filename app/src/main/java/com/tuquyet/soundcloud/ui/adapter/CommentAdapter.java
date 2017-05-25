@@ -59,10 +59,12 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         }
 
         public void blinData(CommentModel item) {
-            loadAvatar(item);
-            mTxtUsernameComment.setText(item.getUser().getUsername());
-            mTxtBodyComment.setText(item.getBody());
-            mTxtTimeCreatedComment.setText(item.getCreatedAt());
+            if (item != null) {
+                loadAvatar(item);
+                mTxtUsernameComment.setText(item.getUser().getUsername());
+                mTxtBodyComment.setText(item.getBody());
+                mTxtTimeCreatedComment.setText(item.getCreatedAt());
+            }
         }
 
         private void loadAvatar(CommentModel item) {

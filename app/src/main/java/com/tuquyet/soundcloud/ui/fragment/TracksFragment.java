@@ -1,9 +1,13 @@
-package com.tuquyet.soundcloud.ui.activity;
+package com.tuquyet.soundcloud.ui.fragment;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.tuquyet.soundcloud.R;
@@ -13,7 +17,6 @@ import com.tuquyet.soundcloud.service.SoundCloundService;
 import com.tuquyet.soundcloud.ui.adapter.TrackAdapter;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -22,19 +25,24 @@ import retrofit2.Response;
 import static com.tuquyet.soundcloud.ui.activity.MainActivity.API_KEY;
 import static com.tuquyet.soundcloud.ui.activity.MainActivity.exampleUserId;
 
-public class TracksActivity extends AppCompatActivity {
+/**
+ * Created by tuquyet on 22/05/2017.
+ */
+public class TracksFragment extends Fragment {
 
-    private RecyclerView mRecyclerTrackInPlaylist;
     private SoundCloundService mService;
+    private RecyclerView mRecyclerView;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_track_in_playlist);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_track, null);
         mService = ServiceGenerator.createService(SoundCloundService.class);
-        mRecyclerTrackInPlaylist = (RecyclerView) findViewById(R.id.recycler_track_in_playlist);
-        mRecyclerTrackInPlaylist.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_track);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
         getTracksOfUser();
+        return view;
     }
 
     private void getTracksOfUser() {
@@ -44,13 +52,13 @@ public class TracksActivity extends AppCompatActivity {
                     public void onResponse(Call<ArrayList<TrackModel>> call,
                                            Response<ArrayList<TrackModel>> response) {
                         if (response != null) {
-                            mRecyclerTrackInPlaylist.setAdapter(new TrackAdapter(response.body()));
+                            mRecyclerView.setAdapter(new TrackAdapter(response.body()));
                         }
                     }
 
                     @Override
                     public void onFailure(Call<ArrayList<TrackModel>> call, Throwable t) {
-                        Toast.makeText(TracksActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }

@@ -63,7 +63,7 @@ public class TrackModel implements Serializable {
     private String mVideoUrl;
 
     @SerializedName("bpm")
-    private int mBpm;
+    private float mBpm;
 
     @SerializedName("commentable")
     private boolean mCommentable;
@@ -168,7 +168,7 @@ public class TrackModel implements Serializable {
         return mVideoUrl;
     }
 
-    public int getBpm() {
+    public float getBpm() {
         return mBpm;
     }
 

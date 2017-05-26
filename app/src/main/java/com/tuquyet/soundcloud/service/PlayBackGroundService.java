@@ -5,18 +5,25 @@ import android.app.Service;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.tuquyet.soundcloud.R;
 import com.tuquyet.soundcloud.data.model.TrackModel;
+
+import java.util.List;
 
 import static com.tuquyet.soundcloud.service.TrackReceiver.ACTION_PAUSE;
 import static com.tuquyet.soundcloud.service.TrackReceiver.ACTION_PLAY;
 import static com.tuquyet.soundcloud.service.TrackReceiver.ACTION_RETURN_SONG_STATUS;
 import static com.tuquyet.soundcloud.service.TrackReceiver.ACTION_RETURN_TRACK;
 import static com.tuquyet.soundcloud.service.TrackReceiver.ACTION_UPDATE_PROGRESSBAR;
+import static com.tuquyet.soundcloud.ui.adapter.TrackAdapter.BUNDLE_LIST_TRACKS;
+import static com.tuquyet.soundcloud.ui.adapter.TrackAdapter.LIST_TRACKS;
+import static com.tuquyet.soundcloud.ui.adapter.TrackAdapter.SELECTED_TRACK;
 import static com.tuquyet.soundcloud.util.widget.NavigationSongBar.SEEK_BAR_MAX;
 
 /**
@@ -39,6 +46,7 @@ public class PlayBackGroundService extends Service {
     public static final String EXTRA_SONG_STATUS = "com.example.tmd.service.EXTRA_SONG_STATUS";
     private Handler mHandler;
     private MediaPlayer mMediaPlayer;
+    private List<TrackModel> mListTracks;
     private TrackModel mTrackModel;
     private Intent mIntent;
     private int mTimeDelay;
@@ -72,15 +80,13 @@ public class PlayBackGroundService extends Service {
         if (action == null) return START_STICKY;
         switch (action) {
             case ACTION_SELECT_SONG:
-                mTrackModel = (TrackModel) intent.getSerializableExtra(EXTRA_TRACK);
-                int songID = intent.getIntExtra(EXTRA_SONG_ID, 0);
+                Bundle bundle = intent.getBundleExtra(BUNDLE_LIST_TRACKS);
+                mListTracks = (List<TrackModel>) bundle.getSerializable(LIST_TRACKS);
+                mTrackModel = mListTracks.get(bundle.getInt(SELECTED_TRACK, 0));
                 if (mMediaPlayer != null && mMediaPlayer.isPlaying()) {
                     mMediaPlayer.stop();
                 }
-                mMediaPlayer = MediaPlayer.create(getApplicationContext(), songID);
-                mMediaPlayer.start();
-                sendBroadcast(ACTION_PLAY);
-
+                streamTrack();
                 calculateDelayTime();
                 if (!mIsUpdatingProgressBar) {
                     mIsUpdatingProgressBar = true;
@@ -131,6 +137,12 @@ public class PlayBackGroundService extends Service {
                 break;
         }
         return START_STICKY;
+    }
+
+    private void streamTrack() {
+        mMediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.gui_anh_xa_nho_bich_phuong);
+        mMediaPlayer.start();
+        sendBroadcast(ACTION_PLAY);
     }
 
     private void sendBroadcast(String action) {

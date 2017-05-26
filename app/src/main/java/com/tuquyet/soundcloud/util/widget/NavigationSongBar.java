@@ -7,7 +7,6 @@ import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -90,7 +89,7 @@ public class NavigationSongBar extends LinearLayout
     private void initViews() {
         mRootView = inflate(mContext, R.layout.layout_navigation_song_bar, this);
         mRelativeLayoutWaveform = (LinearLayout) findViewById(R.id.linear_layout_waveform);
-        mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
+        mProgressBar = (ProgressBar) findViewById(R.id.progress_bar_waveform);
         mProgressBar.setMax(SEEK_BAR_MAX);
         mProgressBarSmall = (ProgressBar) findViewById(R.id.progress_bar_small);
         mProgressBarSmall.setMax(SEEK_BAR_MAX);
@@ -203,7 +202,7 @@ public class NavigationSongBar extends LinearLayout
                                                 GlideAnimation<? super GlideDrawable> glideAnimation) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                             mSeekBar.setBackground(resource);
-                            mImgWaveformSmall.setImageDrawable(resource);
+                            mImgWaveformSmall.setBackground(resource);
                             invalidate();
                         }
                     }

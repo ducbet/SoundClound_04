@@ -2,7 +2,9 @@ package com.tuquyet.soundcloud.ui.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,8 +24,9 @@ import java.util.List;
  */
 public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.ViewHolder> {
 
-    private static final String LIST_TRACKS = "LIST_TRACKS";
-    private static final String SELECTED_TRACK = "SELECTED_TRACK";
+    public static final String BUNDLE_LIST_TRACKS = "BUNDLE_LIST_TRACKS";
+    public static final String LIST_TRACKS = "LIST_TRACKS";
+    public static final String SELECTED_TRACK = "SELECTED_TRACK";
     private List<TrackModel> mTrackItems;
 
     public TrackAdapter(List<TrackModel> trackItems) {
@@ -82,9 +85,11 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.ViewHolder> 
         @Override
         public void onClick(View v) {
             //Do something when item is clicked
+            Bundle bundle = new Bundle();
+            bundle.putInt(SELECTED_TRACK, getAdapterPosition());
+            bundle.putSerializable(LIST_TRACKS, (Serializable) mTrackItems);
             Intent intent = new Intent(v.getContext(), PlaySongActivity.class);
-            intent.putExtra(LIST_TRACKS, (Serializable) mTrackItems);
-            intent.putExtra(SELECTED_TRACK, getAdapterPosition());
+            intent.putExtra(BUNDLE_LIST_TRACKS, bundle);
             v.getContext().startActivity(intent);
         }
 

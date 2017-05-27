@@ -109,6 +109,14 @@ public class TrackModel implements Serializable {
         return mTitle;
     }
 
+    public void setDownloadCount(int downloadCount) {
+        mDownloadCount = downloadCount;
+    }
+
+    public void setFavoritingsCount(int favoritingsCount) {
+        mFavoritingsCount = favoritingsCount;
+    }
+
     public String getArtworkUrl() {
         if (mArtworkUrl == null) return "";
         return mArtworkUrl;

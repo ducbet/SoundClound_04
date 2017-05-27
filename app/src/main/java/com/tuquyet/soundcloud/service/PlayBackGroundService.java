@@ -4,12 +4,12 @@ import android.app.Notification;
 import android.app.Service;
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.tuquyet.soundcloud.R;
 import com.tuquyet.soundcloud.data.model.TrackModel;
@@ -21,6 +21,7 @@ import static com.tuquyet.soundcloud.service.TrackReceiver.ACTION_PLAY;
 import static com.tuquyet.soundcloud.service.TrackReceiver.ACTION_RETURN_SONG_STATUS;
 import static com.tuquyet.soundcloud.service.TrackReceiver.ACTION_RETURN_TRACK;
 import static com.tuquyet.soundcloud.service.TrackReceiver.ACTION_UPDATE_PROGRESSBAR;
+import static com.tuquyet.soundcloud.ui.activity.MainActivity.API_KEY;
 import static com.tuquyet.soundcloud.ui.adapter.TrackAdapter.BUNDLE_LIST_TRACKS;
 import static com.tuquyet.soundcloud.ui.adapter.TrackAdapter.LIST_TRACKS;
 import static com.tuquyet.soundcloud.ui.adapter.TrackAdapter.SELECTED_TRACK;
@@ -38,7 +39,7 @@ public class PlayBackGroundService extends Service {
     public static final String ACTION_SELECT_SONG = "com.example.tmd.service.ACTION_SELECT_SONG";
     public static final String ACTION_SEEK = "com.example.tmd.service.ACTION_SEEK";
     public static final String ACTION_GET_SONG_STATUS =
-            "com.example.tmd.service.ACTION_GET_SONG_STATUS";
+        "com.example.tmd.service.ACTION_GET_SONG_STATUS";
     public static final String EXTRA_SONG_ID = "com.example.tmd.service.EXTRA_SONG_ID";
     public static final String EXTRA_RETURN_TRACK = "com.example.tmd.service.EXTRA_RETURN_TRACK";
     public static final String EXTRA_SEEK = "com.example.tmd.service.EXTRA_SEEK";
@@ -64,7 +65,7 @@ public class PlayBackGroundService extends Service {
         Notification notification = null;
         Notification.Builder builder = new Notification.Builder(getApplicationContext());
         builder.setContentText("Soundcloud")
-                .setSmallIcon(R.drawable.soundcloud);
+            .setSmallIcon(R.drawable.soundcloud);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             notification = builder.build();
         }
@@ -140,9 +141,12 @@ public class PlayBackGroundService extends Service {
     }
 
     private void streamTrack() {
-        mMediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.gui_anh_xa_nho_bich_phuong);
-        mMediaPlayer.start();
-        sendBroadcast(ACTION_PLAY);
+        if (mTrackModel.isStreamable()) {
+            mMediaPlayer = MediaPlayer.create(getApplicationContext(), Uri.parse(mTrackModel
+                .getStreamUrl() + "?client_id=" + API_KEY));
+            mMediaPlayer.start();
+            sendBroadcast(ACTION_PLAY);
+        }
     }
 
     private void sendBroadcast(String action) {
@@ -166,7 +170,7 @@ public class PlayBackGroundService extends Service {
                     if (mMediaPlayer.isPlaying()) {
                         intentUpdateProgressBar.setAction(ACTION_UPDATE_PROGRESSBAR);
                         intentUpdateProgressBar.putExtra(ACTION_UPDATE_PROGRESSBAR,
-                                convertMiliToPercent(mMediaPlayer.getCurrentPosition()));
+                            convertMiliToPercent(mMediaPlayer.getCurrentPosition()));
                         sendBroadcast(intentUpdateProgressBar);
                         updateProgressBar();
                     } else {

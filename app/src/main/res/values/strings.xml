@@ -11,4 +11,5 @@
     <string name="follower">Follower</string>
     <string name="following">Following</string>
     <string name="user_info">Infomation</string>
+    <string name="download_notification">Download from Souncloud</string>
 </resources>

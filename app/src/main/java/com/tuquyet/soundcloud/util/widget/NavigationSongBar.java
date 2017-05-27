@@ -25,9 +25,12 @@ import com.tuquyet.soundcloud.data.model.TrackModel;
 import com.tuquyet.soundcloud.service.PlayBackGroundService;
 import com.tuquyet.soundcloud.service.TrackReceiver;
 
+import static com.tuquyet.soundcloud.service.PlayBackGroundService.ACTION_BACK;
 import static com.tuquyet.soundcloud.service.PlayBackGroundService.ACTION_GET_SONG_STATUS;
+import static com.tuquyet.soundcloud.service.PlayBackGroundService.ACTION_NEXT;
 import static com.tuquyet.soundcloud.service.PlayBackGroundService.ACTION_PLAY_PAUSE;
 import static com.tuquyet.soundcloud.service.PlayBackGroundService.ACTION_SEEK;
+import static com.tuquyet.soundcloud.service.PlayBackGroundService.EXTRA_CURRENT_PROGRESS;
 import static com.tuquyet.soundcloud.service.PlayBackGroundService.EXTRA_RETURN_TRACK;
 import static com.tuquyet.soundcloud.service.PlayBackGroundService.EXTRA_SEEK;
 import static com.tuquyet.soundcloud.service.PlayBackGroundService.EXTRA_SONG_STATUS;
@@ -124,6 +127,9 @@ public class NavigationSongBar extends LinearLayout
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.image_view_previous:
+                mIntent = new Intent(mContext, PlayBackGroundService.class);
+                mIntent.setAction(ACTION_BACK);
+                mContext.startService(mIntent);
                 break;
             case R.id.image_view_play:
                 mIntent = new Intent(mContext, PlayBackGroundService.class);
@@ -131,6 +137,9 @@ public class NavigationSongBar extends LinearLayout
                 mContext.startService(mIntent);
                 break;
             case R.id.image_view_next:
+                mIntent = new Intent(mContext, PlayBackGroundService.class);
+                mIntent.setAction(ACTION_NEXT);
+                mContext.startService(mIntent);
                 break;
             case R.id.relative_layout_small_waveform:
                 if (mIsShowingWaveform) hideWaveform();
@@ -271,8 +280,8 @@ public class NavigationSongBar extends LinearLayout
 
     @Override
     public void onUpdateProgressBar(Intent intent) {
-        mProgressBar.setProgress(intent.getIntExtra(ACTION_UPDATE_PROGRESSBAR, 0));
-        mProgressBarSmall.setProgress(intent.getIntExtra(ACTION_UPDATE_PROGRESSBAR, 0));
+        mProgressBar.setProgress(intent.getIntExtra(EXTRA_CURRENT_PROGRESS, 0));
+        mProgressBarSmall.setProgress(intent.getIntExtra(EXTRA_CURRENT_PROGRESS, 0));
     }
 
     @Override

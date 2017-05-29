@@ -24,6 +24,7 @@ import com.tuquyet.soundcloud.R;
 import com.tuquyet.soundcloud.data.model.TrackModel;
 import com.tuquyet.soundcloud.service.PlayBackGroundService;
 import com.tuquyet.soundcloud.service.TrackReceiver;
+import com.tuquyet.soundcloud.ui.activity.PlaySongActivity;
 
 import static com.tuquyet.soundcloud.service.PlayBackGroundService.ACTION_BACK;
 import static com.tuquyet.soundcloud.service.PlayBackGroundService.ACTION_GET_SONG_STATUS;
@@ -61,6 +62,7 @@ public class NavigationSongBar extends LinearLayout
     private Animation mAnimationShowWaveform, mAnimationHideWaveform;
     private Intent mIntent;
     private TrackReceiver mTrackReceiver;
+    private boolean isPlaySongActivity;
 
     public NavigationSongBar(Context context) {
         super(context);
@@ -97,6 +99,7 @@ public class NavigationSongBar extends LinearLayout
         mProgressBarSmall = (ProgressBar) findViewById(R.id.progress_bar_small);
         mProgressBarSmall.setMax(SEEK_BAR_MAX);
         mImgPlay = (ImageView) findViewById(R.id.image_view_play);
+        mTxtTrackInfo = (TextView) findViewById(R.id.text_view_track_info_navi);
 
         findViewById(R.id.image_view_previous).setOnClickListener(this);
         findViewById(R.id.image_view_play).setOnClickListener(this);
@@ -106,11 +109,18 @@ public class NavigationSongBar extends LinearLayout
         findViewById(R.id.image_view_open_play_song_act).setOnClickListener(this);
         findViewById(R.id.image_view_shuffle).setOnClickListener(this);
 
+        if (mContext instanceof PlaySongActivity) {
+            isPlaySongActivity = true;
+        }
         createBroadcast();
         createSeekBar();
         createShowWaveformAnim();
         createHideWaveformAnim();
-        autoHideWaveform();
+        if (isPlaySongActivity) {
+            hideTitle();
+        } else {
+            autoHideWaveform();
+        }
         if (mTrackModel == null) {
             mRootView.setVisibility(GONE);
         }
@@ -155,6 +165,10 @@ public class NavigationSongBar extends LinearLayout
         }
     }
 
+    public void hideTitle() {
+        mTxtTrackInfo.setVisibility(GONE);
+    }
+
     private void createSeekBar() {
         mSeekBar = (SeekBar) findViewById(R.id.seek_bar_waveform);
         mSeekBar.setMax(SEEK_BAR_MAX);
@@ -186,7 +200,6 @@ public class NavigationSongBar extends LinearLayout
     }
 
     private void loadTrackInfo() {
-        mTxtTrackInfo = (TextView) findViewById(R.id.text_view_track_info);
         String trackInfo = mTrackModel.getTitle() + "\n" +
                 mTrackModel.getDescription();
         mTxtTrackInfo.setText(trackInfo);

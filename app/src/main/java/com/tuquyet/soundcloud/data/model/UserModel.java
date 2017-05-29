@@ -2,11 +2,13 @@ package com.tuquyet.soundcloud.data.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Created by tmd on 13/05/2017.
  */
 
-public class UserModel {
+public class UserModel implements Serializable {
 
     @SerializedName("id")
     private int mID;

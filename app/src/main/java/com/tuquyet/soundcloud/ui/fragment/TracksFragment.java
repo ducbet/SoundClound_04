@@ -24,7 +24,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.tuquyet.soundcloud.ui.activity.MainActivity.API_KEY;
-import static com.tuquyet.soundcloud.ui.activity.MainActivity.exampleUserId;
+import static com.tuquyet.soundcloud.ui.activity.MainActivity.USER_ID;
 
 /**
  * Created by tuquyet on 22/05/2017.
@@ -47,13 +47,14 @@ public class TracksFragment extends Fragment {
     }
 
     private void getTracksOfUser() {
-        mService.getTracksOfUser(exampleUserId, API_KEY)
+        mService.getTracksOfUser(USER_ID, API_KEY)
                 .enqueue(new Callback<ArrayList<TrackModel>>() {
                     @Override
                     public void onResponse(Call<ArrayList<TrackModel>> call,
                                            Response<ArrayList<TrackModel>> response) {
                         if (response != null) {
-                            mRecyclerView.setAdapter(new TrackAdapter(response.body()));
+                            mRecyclerView.setAdapter(new TrackAdapter(getContext(), response.body
+                                ()));
                         }
                     }
 

@@ -80,6 +80,23 @@ public class TrackModel implements Serializable {
     @SerializedName("favoritings_count")
     private int mFavoritingsCount;
 
+    @SerializedName("user")
+    private UserModel mUser;
+
+    public UserModel getUser() {
+        return mUser;
+    }
+
+    private boolean isFavorited;
+
+    public boolean isFavorited() {
+        return isFavorited;
+    }
+
+    public void setFavorited(boolean favorited) {
+        isFavorited = favorited;
+    }
+
     private List<CommentModel> mListComments;
 
     public void setListComments(List<CommentModel> listComments) {

@@ -63,7 +63,7 @@
                     android:layout_height="@dimen/dp_30"
                     android:layout_marginLeft="@dimen/dp_10"
                     android:layout_marginRight="@dimen/dp_10"
-                    android:src="@drawable/ic_file_download_gray_24px"/>
+                    android:src="@drawable/ic_file_download_white_24px"/>
 
                 <TextView
                     android:id="@+id/text_view_download_count"

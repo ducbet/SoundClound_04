@@ -92,23 +92,28 @@ public class NavigationSongBar extends LinearLayout
     private void initViews() {
         mRootView = inflate(mContext, R.layout.layout_navigation_song_bar, this);
         mRelativeLayoutWaveform = (LinearLayout) findViewById(R.id.linear_layout_waveform);
-        mProgressBar = (ProgressBar) findViewById(R.id.progress_bar_waveform);
+        mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
         mProgressBar.setMax(SEEK_BAR_MAX);
         mProgressBarSmall = (ProgressBar) findViewById(R.id.progress_bar_small);
         mProgressBarSmall.setMax(SEEK_BAR_MAX);
-        mImgWaveformSmall = ((ImageView) mRootView.findViewById(R.id.image_view_waveform_small));
         mImgPlay = (ImageView) findViewById(R.id.image_view_play);
 
-        findViewById(R.id.relative_layout_small_waveform).setOnClickListener(this);
         findViewById(R.id.image_view_previous).setOnClickListener(this);
         findViewById(R.id.image_view_play).setOnClickListener(this);
         findViewById(R.id.image_view_next).setOnClickListener(this);
+        findViewById(R.id.image_view_waveform).setOnClickListener(this);
+        findViewById(R.id.image_view_replay).setOnClickListener(this);
+        findViewById(R.id.image_view_open_play_song_act).setOnClickListener(this);
+        findViewById(R.id.image_view_shuffle).setOnClickListener(this);
 
         createBroadcast();
         createSeekBar();
         createShowWaveformAnim();
         createHideWaveformAnim();
         autoHideWaveform();
+        if (mTrackModel == null) {
+            mRootView.setVisibility(GONE);
+        }
     }
 
     private void createBroadcast() {
@@ -141,7 +146,7 @@ public class NavigationSongBar extends LinearLayout
                 mIntent.setAction(ACTION_NEXT);
                 mContext.startService(mIntent);
                 break;
-            case R.id.relative_layout_small_waveform:
+            case R.id.image_view_waveform:
                 if (mIsShowingWaveform) hideWaveform();
                 else showWaveform();
                 break;
@@ -211,7 +216,6 @@ public class NavigationSongBar extends LinearLayout
                                                 GlideAnimation<? super GlideDrawable> glideAnimation) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                             mSeekBar.setBackground(resource);
-                            mImgWaveformSmall.setBackground(resource);
                             invalidate();
                         }
                     }
@@ -270,12 +274,12 @@ public class NavigationSongBar extends LinearLayout
 
     @Override
     public void onPause(Intent intent) {
-        mImgPlay.setImageResource(R.drawable.ic_pause_white_24px);
+        mImgPlay.setImageResource(R.drawable.ic_pause_flat);
     }
 
     @Override
     public void onPlay(Intent intent) {
-        mImgPlay.setImageResource(R.drawable.ic_play_arrow_white_24px);
+        mImgPlay.setImageResource(R.drawable.ic_play_flat);
     }
 
     @Override
@@ -287,6 +291,9 @@ public class NavigationSongBar extends LinearLayout
     @Override
     public void onReturnTrackFromService(Intent intent) {
         this.mTrackModel = (TrackModel) intent.getSerializableExtra(EXTRA_RETURN_TRACK);
+        if (mRootView.getVisibility() == GONE && mTrackModel != null) {
+            mRootView.setVisibility(VISIBLE);
+        }
         loadWaveform();
         loadTrackInfo();
         loadSongStatus();
@@ -295,9 +302,9 @@ public class NavigationSongBar extends LinearLayout
     @Override
     public void onReturnSongStatus(Intent intent) {
         if (intent.getBooleanExtra(EXTRA_SONG_STATUS, true)) {
-            mImgPlay.setImageResource(R.drawable.ic_pause_white_24px);
+            mImgPlay.setImageResource(R.drawable.ic_pause_flat);
         } else {
-            mImgPlay.setImageResource(R.drawable.ic_play_arrow_white_24px);
+            mImgPlay.setImageResource(R.drawable.ic_play_flat);
         }
     }
 

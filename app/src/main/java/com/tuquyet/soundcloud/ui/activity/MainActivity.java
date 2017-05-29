@@ -14,13 +14,9 @@ import com.tuquyet.soundcloud.ui.fragment.TracksFragment;
 import com.tuquyet.soundcloud.ui.fragment.FollowingsFragment;
 
 public class MainActivity extends AppCompatActivity {
-    public static final String API_KEY = "08f79801a998c381762ec5b15e4914d5";
+    public static final String API_KEY = "64a52bb31abd2ec73f8adda86358cfbf";
     private SoundCloundService mService;
-    public static int exampleUserId = 3207;// test's user id
-//    public static int exampleUserId = 164323240;// my's user id
-//    public static int exampleUserId = 38247973;// Quyết's user id
-//    public static int exampleUserId = 25450224;// Sơn Tường Ôm TV's user id
-//    public static int exampleUserId = 4829705;// TiênCookie's user id
+    public static int exampleUserId = 3207;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -48,7 +48,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorTranscent_2"
+        android:background="@color/color_black_transcent"
         android:orientation="horizontal"
         android:paddingTop="5dp">
 
@@ -74,7 +74,7 @@
         android:id="@+id/text_view_track_info_play_act"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorTranscent_2"
+        android:background="@color/color_black_transcent"
         android:gravity="center_horizontal"
         android:maxLines="3"
         android:paddingTop="@dimen/dp_5"
@@ -88,7 +88,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@color/colorTranscent_2"
+        android:background="@color/color_black_transcent"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"/>
 

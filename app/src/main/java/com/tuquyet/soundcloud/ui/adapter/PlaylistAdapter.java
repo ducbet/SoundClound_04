@@ -101,8 +101,8 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
             Glide.with(mContext)
                     .load(playlistItem.getArtworkUrl())
                     .centerCrop()
-                    .error(R.mipmap.ic_launcher)
-                    .placeholder(R.mipmap.ic_launcher_round)
+                    .error(R.drawable.soundcloud)
+                    .placeholder(R.drawable.soundcloud)
                     .into(mImagePlaylistAvatar);
         }
     }

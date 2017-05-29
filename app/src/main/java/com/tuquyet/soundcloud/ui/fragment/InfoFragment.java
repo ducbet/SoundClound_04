@@ -3,6 +3,7 @@ package com.tuquyet.soundcloud.ui.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,33 +61,33 @@ public class InfoFragment extends Fragment {
 
     private void getUser() {
         mService.getUser(USER_ID, API_KEY)
-            .enqueue(new Callback<UserModel>() {
-                @Override
-                public void onResponse(Call<UserModel> call,
-                                       Response<UserModel> response) {
-                    if (response != null) {
-                        mUserModel = response.body();
-                        loadData();
+                .enqueue(new Callback<UserModel>() {
+                    @Override
+                    public void onResponse(Call<UserModel> call,
+                                           Response<UserModel> response) {
+                        if (response != null) {
+                            mUserModel = response.body();
+                            loadData();
+                        }
                     }
-                }
 
-                private void loadData() {
-                    mInfoUserName.setText(mUserModel.getUsername());
-                    mInfoFullName.setText(mUserModel.getFullName());
-                    mInfoDescription.setText(mUserModel.getDescription());
-                    mInfoCountry.setText(mUserModel.getCountry());
-                    mInfoCity.setText(mUserModel.getCity());
-                    mInfoTracks.setText(String.valueOf(mUserModel.getTrackCount()));
-                    mInfoPlaylists.setText(String.valueOf(mUserModel.getPlaylistCount()));
-                    mInfoFollower.setText(String.valueOf(mUserModel.getFollowersCount()));
-                    mInfoFollowing.setText(String.valueOf(mUserModel.getFollowingsCount()));
-                }
+                    private void loadData() {
+                        mInfoUserName.setText(mUserModel.getUsername());
+                        mInfoFullName.setText(mUserModel.getFullName());
+                        mInfoDescription.setText(mUserModel.getDescription());
+                        mInfoCountry.setText(mUserModel.getCountry());
+                        mInfoCity.setText(mUserModel.getCity());
+                        mInfoTracks.setText(String.valueOf(mUserModel.getTrackCount()));
+                        mInfoPlaylists.setText(String.valueOf(mUserModel.getPlaylistCount()));
+                        mInfoFollower.setText(String.valueOf(mUserModel.getFollowersCount()));
+                        mInfoFollowing.setText(String.valueOf(mUserModel.getFollowingsCount()));
+                    }
 
-                @Override
-                public void onFailure(Call<UserModel> call, Throwable t) {
-                    Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT)
-                        .show();
-                }
-            });
+                    @Override
+                    public void onFailure(Call<UserModel> call, Throwable t) {
+                        Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT)
+                                .show();
+                    }
+                });
     }
 }

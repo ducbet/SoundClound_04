@@ -15,7 +15,7 @@
             android:id="@+id/text_view_track_info_navi"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorTranscent_2"
+            android:background="@color/color_black_transcent"
             android:gravity="center_horizontal"
             android:paddingTop="@dimen/dp_5"
             android:text="@string/track_info"

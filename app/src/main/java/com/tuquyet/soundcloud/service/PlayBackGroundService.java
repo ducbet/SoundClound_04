@@ -11,6 +11,7 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.widget.Toast;
 
+import com.tuquyet.soundcloud.R;
 import com.tuquyet.soundcloud.data.model.TrackModel;
 import com.tuquyet.soundcloud.util.widget.NotificationSong;
 

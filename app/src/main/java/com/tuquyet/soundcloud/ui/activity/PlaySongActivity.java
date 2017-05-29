@@ -19,6 +19,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -65,14 +67,14 @@ public class PlaySongActivity extends AppCompatActivity
     private CommentAdapter mCommentAdapter;
     private RecyclerView mRecComments;
     private ImageView mImgArtwork;
-    private ImageView mImgDơwnload;
+    private ImageView mImgDownload;
+    private TextView mTxtTrackInfo;
     private ImageView mImgFavorite;
-    private TextView mTextFavoriteCount;
-    private TextView mTextDownloadCount;
-    private TextView mTextCommentCount;
     private Intent mIntent;
     private DownloadManager mDownloadManager;
     private TrackReceiver mTrackReceiver;
+    private Animation mAnimRotateArtwork;
+    private Animation mAnimRotateTurntableSeek;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,9 +83,8 @@ public class PlaySongActivity extends AppCompatActivity
         setContentView(R.layout.activity_play_song);
         initViews();
         getTrack();
-        getCount();
         createBroadcast();
-        mImgDơwnload.setOnClickListener(this);
+        mImgDownload.setOnClickListener(this);
         mImgFavorite.setOnClickListener(this);
     }
 
@@ -103,17 +104,12 @@ public class PlaySongActivity extends AppCompatActivity
         mService = ServiceGenerator.createService(SoundCloundService.class);
         mImgArtwork = (ImageView) findViewById(R.id.image_view_artwork);
         mRecComments = (RecyclerView) findViewById(R.id.recycler_view_comment);
-        mImgDơwnload = (ImageView) findViewById(R.id.image_view_download);
+        mTxtTrackInfo = (TextView) findViewById(R.id.text_view_track_info_play_act);
+        mImgDownload = (ImageView) findViewById(R.id.image_view_download);
         mImgFavorite = (ImageView) findViewById(R.id.image_view_favorite);
-        mTextFavoriteCount = (TextView) findViewById(R.id.text_view_favorite_count);
-        mTextDownloadCount = (TextView) findViewById(R.id.text_view_download_count);
-        mTextCommentCount = (TextView) findViewById(R.id.text_view_comment_count);
-    }
-
-    private void getCount() {
-        mTextFavoriteCount.setText(String.valueOf(mTrackModel.getFavoritingsCount()));
-        mTextCommentCount.setText(String.valueOf(mTrackModel.getCommentCount()));
-        mTextDownloadCount.setText(String.valueOf(mTrackModel.getDownloadCount()));
+        mAnimRotateArtwork = AnimationUtils.loadAnimation(this, R.anim.anim_rotate_artwork);
+        mAnimRotateTurntableSeek =
+                AnimationUtils.loadAnimation(this, R.anim.anim_rotate_turntable_seek);
     }
 
     private void pullComment(final TrackModel trackModel) {
@@ -140,6 +136,12 @@ public class PlaySongActivity extends AppCompatActivity
         }
     }
 
+    private void loadTitle(TrackModel trackModel) {
+        String trackInfo = mTrackModel.getTitle() + "\n" +
+                mTrackModel.getDescription();
+        mTxtTrackInfo.setText(trackInfo);
+    }
+
     private void loadComment() {
         mListComments = mTrackModel.getListComments();
         mCommentAdapter = new CommentAdapter(this, mListComments);
@@ -152,8 +154,8 @@ public class PlaySongActivity extends AppCompatActivity
         Glide.with(this)
                 .load(url)
                 .centerCrop()
-                .error(R.drawable.soundcloud)
-                .placeholder(R.mipmap.ic_launcher_round)
+                .error(R.drawable.sound_clound_2)
+                .placeholder(R.drawable.sound_clound_2)
                 .into(imgTarget);
     }
 
@@ -165,7 +167,10 @@ public class PlaySongActivity extends AppCompatActivity
             mTrackModel = mListTracks.get(bundle.getInt(SELECTED_TRACK, 0));
             pullComment(mTrackModel);
             loadImage(mTrackModel.getArtworkUrl(), mImgArtwork);
+            loadTitle(mTrackModel);
             sendListTrackToService(bundle);
+            mImgArtwork.startAnimation(mAnimRotateArtwork);
+            findViewById(R.id.image_view_turntable_seek).setAnimation(mAnimRotateTurntableSeek);
         }
     }
 
@@ -210,7 +215,6 @@ public class PlaySongActivity extends AppCompatActivity
         manager.enqueue(request);
         int downloadCount = mTrackModel.getDownloadCount();
         mTrackModel.setDownloadCount(downloadCount++);
-        mTextDownloadCount.setText(String.valueOf(downloadCount));
     }
 
     @Override
@@ -273,9 +277,8 @@ public class PlaySongActivity extends AppCompatActivity
                     mImgFavorite.setImageResource(R.drawable.ic_favorite_red_24px);
                     int favoriteCount = mTrackModel.getFavoritingsCount();
                     mTrackModel.setFavoritingsCount(favoriteCount++);
-                    mTextFavoriteCount.setText(String.valueOf(favoriteCount));
                 }
-            mTrackModel.setFavorited(true);
+                mTrackModel.setFavorited(true);
             }
             break;
 
@@ -310,6 +313,7 @@ public class PlaySongActivity extends AppCompatActivity
         mTrackModel = (TrackModel) intent.getSerializableExtra(EXTRA_RETURN_TRACK);
         pullComment(mTrackModel);
         loadImage(mTrackModel.getArtworkUrl(), mImgArtwork);
+        loadTitle(mTrackModel);
     }
 
     @Override

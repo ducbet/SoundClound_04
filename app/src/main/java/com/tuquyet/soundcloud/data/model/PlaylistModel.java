@@ -2,11 +2,14 @@ package com.tuquyet.soundcloud.data.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+import java.util.List;
+
 /**
  * Created by tmd on 13/05/2017.
  */
 
-public class PlaylistModel {
+public class PlaylistModel implements Serializable {
 
     @SerializedName("id")
     private int mID;
@@ -47,6 +50,12 @@ public class PlaylistModel {
     @SerializedName("downloadable")
     private boolean mDownloadable;
 
+    @SerializedName("tracks")
+    private List<TrackModel> mListTracks;
+
+    public List<TrackModel> getListTracks() {
+        return mListTracks;
+    }
 
     public String getTitle() {
         if (mTitle == null) return "";

@@ -58,7 +58,7 @@
             style="@style/Widget.AppCompat.ProgressBar.Horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colorWaveform"
+            android:background="@color/color_grey_200"
             android:progressDrawable="@drawable/bg_progressbar"
             />
 

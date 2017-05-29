@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,25 +17,27 @@ import com.tuquyet.soundcloud.ui.activity.PlaySongActivity;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by tuquyet on 22/05/2017.
  */
 public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.ViewHolder> {
-
     public static final String BUNDLE_LIST_TRACKS = "BUNDLE_LIST_TRACKS";
     public static final String LIST_TRACKS = "LIST_TRACKS";
     public static final String SELECTED_TRACK = "SELECTED_TRACK";
     private List<TrackModel> mTrackItems;
+    private Context mContext;
 
-    public TrackAdapter(List<TrackModel> trackItems) {
+    public TrackAdapter(Context context, List<TrackModel> trackItems) {
+        mContext = context;
         mTrackItems = trackItems;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_track, parent, false);
+            .inflate(R.layout.item_track, parent, false);
         return new ViewHolder(v);
     }
 
@@ -55,9 +56,16 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.ViewHolder> 
         private ImageView mImageTrackAvatar;
         private TextView mTextTrackTitle;
         private TextView mTextTrackUser;
-        private TextView mTextTrackDate;
+        private TextView mTextTrackDuration;
+        private TextView mTextTrackPlayCount;
+        private TextView mTextTrackFavoriteCount;
+        private TextView mTextTrackCommentCount;
+        private TextView mTextTrackDownloadCount;
         private ImageView mImageTrackWaveform;
         private Context mContext;
+        private int mTrackDurationSecond;
+        private int mTrackDurationMinute;
+        private int mTrackDurationHour;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -70,7 +78,14 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.ViewHolder> 
             mImageTrackAvatar = (ImageView) itemView.findViewById(R.id.image_track_avatar);
             mTextTrackTitle = (TextView) itemView.findViewById(R.id.text_track_title);
             mTextTrackUser = (TextView) itemView.findViewById(R.id.text_track_user);
-            mTextTrackDate = (TextView) itemView.findViewById(R.id.text_track_date);
+            mTextTrackDuration = (TextView) itemView.findViewById(R.id.text_track_duration);
+            mTextTrackPlayCount = (TextView) itemView.findViewById(R.id.text_track_play_count);
+            mTextTrackFavoriteCount =
+                (TextView) itemView.findViewById(R.id.text_track_favorite_count);
+            mTextTrackCommentCount =
+                (TextView) itemView.findViewById(R.id.text_track_comment_count);
+            mTextTrackDownloadCount =
+                (TextView) itemView.findViewById(R.id.text_track_download_count);
             mImageTrackWaveform = (ImageView) itemView.findViewById(R.id.image_track_waveform);
         }
 
@@ -78,7 +93,15 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.ViewHolder> 
             if (trackItem != null) {
                 loadAvatar(trackItem);
                 mTextTrackTitle.setText(trackItem.getTitle());
-                mTextTrackDate.setText(trackItem.getCreatedAt());
+                mTextTrackUser.setText(trackItem.getUser().getUsername());
+                loadImage(trackItem.getWaveformUrl(), mImageTrackWaveform);
+                setDuration(trackItem);
+                mTextTrackDuration.setText(mTrackDurationHour + " : " +
+                    mTrackDurationMinute + " : " + mTrackDurationSecond);
+                mTextTrackPlayCount.setText(String.valueOf(trackItem.getPlaybackCount()));
+                mTextTrackFavoriteCount.setText(String.valueOf(trackItem.getFavoritingsCount()));
+                mTextTrackCommentCount.setText(String.valueOf(trackItem.getCommentCount()));
+                mTextTrackDownloadCount.setText(String.valueOf(trackItem.getDownloadCount()));
             }
         }
 
@@ -95,11 +118,30 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.ViewHolder> 
 
         private void loadAvatar(TrackModel trackItem) {
             Glide.with(mContext)
-                    .load(trackItem.getArtworkUrl())
-                    .centerCrop()
-                    .error(R.mipmap.ic_launcher)
-                    .placeholder(R.mipmap.ic_launcher_round)
-                    .into(mImageTrackAvatar);
+                .load(trackItem.getArtworkUrl())
+                .centerCrop()
+                .error(R.mipmap.ic_launcher)
+                .placeholder(R.mipmap.ic_launcher_round)
+                .into(mImageTrackAvatar);
+        }
+
+        private void loadImage(String url, ImageView imgTarget) {
+            Glide.with(mContext)
+                .load(url)
+                .centerCrop()
+                .error(R.drawable.soundcloud)
+                .placeholder(R.mipmap.ic_launcher_round)
+                .into(imgTarget);
+        }
+        private void setDuration(TrackModel trackItem) {
+            int millis = trackItem.getDuration();
+            mTrackDurationHour = (int) TimeUnit.MILLISECONDS.toHours(millis);
+            millis -= TimeUnit.HOURS.toMillis(mTrackDurationHour);
+            mTrackDurationMinute = (int) TimeUnit.MILLISECONDS.toMinutes(millis);
+            millis -= TimeUnit.MINUTES.toMillis(mTrackDurationMinute);
+            mTrackDurationSecond = (int) TimeUnit.MILLISECONDS.toSeconds(millis);
         }
     }
+
+
 }

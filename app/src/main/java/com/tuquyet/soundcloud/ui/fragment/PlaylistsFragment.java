@@ -23,7 +23,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.tuquyet.soundcloud.ui.activity.MainActivity.API_KEY;
-import static com.tuquyet.soundcloud.ui.activity.MainActivity.exampleUserId;
+import static com.tuquyet.soundcloud.ui.activity.MainActivity.USER_ID;
 
 /**
  * Created by tuquyet on 22/05/2017.
@@ -46,7 +46,7 @@ public class PlaylistsFragment extends Fragment {
     }
 
     private void getPlaylistsOfUser() {
-        mService.getPlaylistsOfUser(exampleUserId, API_KEY)
+        mService.getPlaylistsOfUser(USER_ID, API_KEY)
                 .enqueue(new Callback<ArrayList<PlaylistModel>>() {
                     @Override
                     public void onResponse(Call<ArrayList<PlaylistModel>> call,

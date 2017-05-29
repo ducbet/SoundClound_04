@@ -16,7 +16,7 @@
             android:layout_width="@dimen/dp_75"
             android:layout_height="@dimen/dp_75"
             android:layout_margin="@dimen/dp_5"
-            android:src="@mipmap/ic_launcher"/>
+            android:src="@drawable/soundcloud"/>
 
         <LinearLayout
             android:layout_width="match_parent"

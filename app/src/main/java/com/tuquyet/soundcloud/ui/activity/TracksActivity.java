@@ -14,7 +14,6 @@ import static com.tuquyet.soundcloud.ui.adapter.PlaylistAdapter.BUNDLE_PLAYLIST;
 import static com.tuquyet.soundcloud.ui.adapter.PlaylistAdapter.SELECTED_PLAYLIST;
 
 public class TracksActivity extends AppCompatActivity {
-
     private Intent mIntent;
     private RecyclerView mRecyclerTrackInPlaylist;
     private PlaylistModel mPlaylist;
@@ -27,9 +26,10 @@ public class TracksActivity extends AppCompatActivity {
         mRecyclerTrackInPlaylist = (RecyclerView) findViewById(R.id.recycler_track_in_playlist);
         mRecyclerTrackInPlaylist.setLayoutManager(new LinearLayoutManager(this));
         if (mPlaylist != null) {
-            mRecyclerTrackInPlaylist.setAdapter(new TrackAdapter(mPlaylist.getListTracks()));
+            mRecyclerTrackInPlaylist.setAdapter(new TrackAdapter(this, mPlaylist
+                .getListTracks()));
         } else {
-            mRecyclerTrackInPlaylist.setAdapter(new TrackAdapter(null));
+            mRecyclerTrackInPlaylist.setAdapter(new TrackAdapter(this, null));
         }
     }
 

@@ -269,12 +269,16 @@ public class PlaySongActivity extends AppCompatActivity
             }
             break;
             case R.id.image_view_favorite: {
-                mImgFavorite.setImageResource(R.drawable.ic_favorite_red_24px);
-                int favoriteCount = mTrackModel.getFavoritingsCount();
-                mTrackModel.setFavoritingsCount(favoriteCount++);
-                mTextFavoriteCount.setText(String.valueOf(favoriteCount));
+                if (!(mTrackModel.isFavorited())) {
+                    mImgFavorite.setImageResource(R.drawable.ic_favorite_red_24px);
+                    int favoriteCount = mTrackModel.getFavoritingsCount();
+                    mTrackModel.setFavoritingsCount(favoriteCount++);
+                    mTextFavoriteCount.setText(String.valueOf(favoriteCount));
+                }
+            mTrackModel.setFavorited(true);
             }
             break;
+
             default:
                 break;
         }

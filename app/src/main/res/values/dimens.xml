@@ -25,5 +25,6 @@
     <dimen name="dp_80">80dp</dimen>
     <dimen name="dp_2">2dp</dimen>
     <dimen name="dp_7">7dp</dimen>
+    <dimen name="dp_35">35dp</dimen>
 </resources>
 

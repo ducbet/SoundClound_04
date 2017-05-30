@@ -7,7 +7,9 @@
     <ImageView
         android:id="@+id/image_view_notifi_track_avatar"
         android:layout_width="@dimen/notification_height"
-        android:layout_height="@dimen/notification_height"/>
+        android:layout_height="@dimen/notification_height"
+        android:padding="@dimen/dp_5"
+        android:src="@drawable/soundcloud"/>
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -312,6 +312,7 @@ public class PlaySongActivity extends AppCompatActivity
     @Override
     public void onReturnTrackFromService(Intent intent) {
         mTrackModel = (TrackModel) intent.getSerializableExtra(EXTRA_RETURN_TRACK);
+        if (mTrackModel == null) return;
         pullComment(mTrackModel);
         loadImage(mTrackModel.getArtworkUrl(), mImgArtwork);
         loadTitle(mTrackModel);

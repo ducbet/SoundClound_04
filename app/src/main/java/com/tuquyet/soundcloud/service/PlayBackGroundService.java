@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.tuquyet.soundcloud.R;
@@ -16,6 +17,7 @@ import com.tuquyet.soundcloud.data.model.TrackModel;
 import com.tuquyet.soundcloud.util.widget.NotificationSong;
 
 import java.util.List;
+import java.util.Random;
 
 import static com.tuquyet.soundcloud.service.TrackReceiver.ACTION_PAUSE;
 import static com.tuquyet.soundcloud.service.TrackReceiver.ACTION_PLAY;
@@ -31,7 +33,7 @@ import static com.tuquyet.soundcloud.util.widget.NavigationSongBar.SEEK_BAR_MAX;
 /**
  * Created by tmd on 27/04/2017.
  */
-public class PlayBackGroundService extends Service {
+public class PlayBackGroundService extends Service implements MediaPlayer.OnCompletionListener {
     private static final String TAG = "MY_SampleService";
     public static final int NOTIFICATION_ID = 1;
     public static final String ACTION_BACK = "com.example.tmd.service.ACTION_BACK";
@@ -42,7 +44,9 @@ public class PlayBackGroundService extends Service {
     public static final String ACTION_GET_SONG_STATUS =
             "com.example.tmd.service.ACTION_GET_SONG_STATUS";
     public static final String ACTION_OPEN_PLAY_SONG_ACTIVITY = "com.example.tmd.service.ACTION_OPEN_PLAY_SONG_ACTIVITY";
-    public static final String EXTRA_SONG_ID = "com.example.tmd.service.EXTRA_SONG_ID";
+    public static final String ACTION_REPLAY = "com.example.tmd.service.ACTION_REPLAY";
+    public static final String ACTION_SHUFFLE = "com.example.tmd.service.ACTION_SHUFFLE";
+    public static final String ACTION_REQUEST_TRACK = "com.example.tmd.service.ACTION_REQUEST_TRACK";
     public static final String EXTRA_RETURN_TRACK = "com.example.tmd.service.EXTRA_RETURN_TRACK";
     public static final String EXTRA_SEEK = "com.example.tmd.service.EXTRA_SEEK";
     public static final String EXTRA_TRACK = "com.example.tmd.service.EXTRA_TRACK";
@@ -57,6 +61,9 @@ public class PlayBackGroundService extends Service {
     private int mTimeDelay;
     private boolean mIsUpdatingProgressBar;
     private NotificationSong mNotificationSong;
+    private boolean mIsReplay;
+    private boolean mIsShuffle;
+    private int mRandomNumber;
 
     @Nullable
     @Override
@@ -85,41 +92,13 @@ public class PlayBackGroundService extends Service {
                 playTrack();
                 break;
             case ACTION_BACK:
-                if (mPositionTrackPlaying > 0) {
-                    mPositionTrackPlaying--;
-                    sendProgressBroadcast(0);
-                    playTrack();
-                } else {
-                    Toast.makeText(getApplicationContext(),
-                            "Đây là track đầu tiên trong playlist",
-                            Toast.LENGTH_SHORT).show();
-                }
+                playBack();
                 break;
             case ACTION_PLAY_PAUSE:
-                if (mMediaPlayer != null) {
-                    if (mMediaPlayer.isPlaying()) {
-                        mMediaPlayer.pause();
-                        sendTrackBroadcast(ACTION_PAUSE);
-                    } else {
-                        mMediaPlayer.start();
-                        if (!mIsUpdatingProgressBar) {
-                            mIsUpdatingProgressBar = true;
-                            updateProgressBar();
-                        }
-                        sendTrackBroadcast(ACTION_PLAY);
-                    }
-                }
+                play();
                 break;
             case ACTION_NEXT:
-                if (mPositionTrackPlaying < mListTracks.size() - 1) {
-                    mPositionTrackPlaying++;
-                    sendProgressBroadcast(0);
-                    playTrack();
-                } else {
-                    Toast.makeText(getApplicationContext(),
-                            "Đã phát hết playlist",
-                            Toast.LENGTH_SHORT).show();
-                }
+                playNext();
                 break;
             case ACTION_SEEK:
                 int seekPercent = intent.getIntExtra(EXTRA_SEEK, 0);
@@ -138,10 +117,70 @@ public class PlayBackGroundService extends Service {
                 mIntent.putExtra(EXTRA_SONG_STATUS, mMediaPlayer.isPlaying());
                 sendBroadcast(mIntent);
                 break;
+            case ACTION_REPLAY:
+                if (mIsReplay) {
+                    mIsReplay = false;
+                } else {
+                    mIsReplay = true;
+                }
+                break;
+            case ACTION_SHUFFLE:
+                if (mIsShuffle) {
+                    mIsShuffle = false;
+                } else {
+                    mIsShuffle = true;
+                }
+                break;
+            case ACTION_REQUEST_TRACK:
+                mIntent = new Intent();
+                mIntent.setAction(ACTION_RETURN_TRACK);
+                mIntent.putExtra(EXTRA_RETURN_TRACK, mTrackModel);
+                sendBroadcast(mIntent);
+                break;
             default:
                 break;
         }
         return START_STICKY;
+    }
+
+    private void play() {
+        if (mMediaPlayer != null) {
+            if (mMediaPlayer.isPlaying()) {
+                mMediaPlayer.pause();
+                sendTrackBroadcast(ACTION_PAUSE);
+            } else {
+                mMediaPlayer.start();
+                if (!mIsUpdatingProgressBar) {
+                    mIsUpdatingProgressBar = true;
+                    updateProgressBar();
+                }
+                sendTrackBroadcast(ACTION_PLAY);
+            }
+        }
+    }
+
+    private void playNext() {
+        if (mPositionTrackPlaying < mListTracks.size() - 1) {
+            mPositionTrackPlaying++;
+            sendProgressBroadcast(0);
+            playTrack();
+        } else {
+            Toast.makeText(getApplicationContext(),
+                    "Đã phát hết playlist",
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void playBack() {
+        if (mPositionTrackPlaying > 0) {
+            mPositionTrackPlaying--;
+            sendProgressBroadcast(0);
+            playTrack();
+        } else {
+            Toast.makeText(getApplicationContext(),
+                    "Đây là track đầu tiên trong playlist",
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void playTrack() {
@@ -167,6 +206,7 @@ public class PlayBackGroundService extends Service {
                     mService = (PlayBackGroundService) params[0];
                     mMediaPlayer = MediaPlayer.create(getApplicationContext(), Uri.parse(mTrackModel
                             .getStreamUrl() + "?client_id=" + API_KEY));
+//                    mMediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.gui_anh_xa_nho_bich_phuong);
                     return null;
                 }
 
@@ -175,6 +215,7 @@ public class PlayBackGroundService extends Service {
                     super.onPostExecute(aVoid);
                     calculateDelayTime();
                     mMediaPlayer.start();
+                    mMediaPlayer.setOnCompletionListener(PlayBackGroundService.this);
                     mService.sendTrackBroadcast(ACTION_PLAY);
                     if (!mIsUpdatingProgressBar) {
                         mIsUpdatingProgressBar = true;
@@ -233,5 +274,23 @@ public class PlayBackGroundService extends Service {
         int duration = mMediaPlayer.getDuration();
         int percent = seekMili * SEEK_BAR_MAX / duration;
         return percent;
+    }
+
+    public int getRandomNumber() {
+        Random ran = new Random();
+        return ran.nextInt(mListTracks.size());
+    }
+
+    @Override
+    public void onCompletion(MediaPlayer mp) {
+        sendProgressBroadcast(SEEK_BAR_MAX);
+        if (mIsShuffle) {
+            mPositionTrackPlaying = getRandomNumber();
+            play();
+        } else if (mIsReplay) {
+            play();
+        } else {
+            playNext();
+        }
     }
 }

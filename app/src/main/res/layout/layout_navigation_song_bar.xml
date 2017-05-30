@@ -93,7 +93,7 @@
                     android:background="@drawable/replay_background"
                     android:padding="@dimen/dp_5"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/ic_replay_choosen_flat"/>
+                    android:src="@drawable/ic_replay_flat"/>
             </LinearLayout>
 
             <ImageView
@@ -132,7 +132,7 @@
                     android:background="@drawable/replay_background"
                     android:padding="@dimen/dp_5"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/ic_track_info_choosen_flat"/>
+                    android:src="@drawable/ic_track_info_flat"/>
 
                 <ImageView
                     android:id="@+id/image_view_shuffle"
@@ -143,7 +143,7 @@
                     android:background="@drawable/replay_background"
                     android:padding="@dimen/dp_7"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/ic_shuffle_choosen_flat"/>
+                    android:src="@drawable/ic_shuffle_flat"/>
 
             </LinearLayout>
         </LinearLayout>

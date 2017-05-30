@@ -82,7 +82,7 @@ public class NotificationSong implements TrackReceiver.OnReceiverListener {
     public void updatePlayingTrack(TrackModel trackModel) {
         mTrackModel = trackModel;
         updateTitle();
-        updateAvatar();
+//        updateAvatar();
         ((NotificationManager) mService.getSystemService(Context.NOTIFICATION_SERVICE)).
                 notify(NOTIFICATION_ID, mNotification);
     }

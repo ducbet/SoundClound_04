@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        removeTittleBar();
         setContentView(com.tuquyet.soundcloud.R.layout.activity_main);
         ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
         addPages(viewPager);
@@ -102,5 +104,17 @@ public class MainActivity extends AppCompatActivity {
                                 .show();
                     }
                 });
+    }
+
+    public void removeTittleBar() {
+        //remove title bar,..//phai de truoc setContentView(R.layout.activity_animation);
+        getSupportActionBar().hide();//hide Title Bar (tên application)
+        View decorView = getWindow().getDecorView();
+        int uiOptions = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION //hide Navigation Bar (thanh dưới cùng)
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY; // quay trở lại trạng thái ẩn nếu không chạm nữa
+        decorView.setSystemUiVisibility(uiOptions);
     }
 }

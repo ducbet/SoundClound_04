@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -30,7 +31,10 @@ import static com.tuquyet.soundcloud.service.PlayBackGroundService.ACTION_BACK;
 import static com.tuquyet.soundcloud.service.PlayBackGroundService.ACTION_GET_SONG_STATUS;
 import static com.tuquyet.soundcloud.service.PlayBackGroundService.ACTION_NEXT;
 import static com.tuquyet.soundcloud.service.PlayBackGroundService.ACTION_PLAY_PAUSE;
+import static com.tuquyet.soundcloud.service.PlayBackGroundService.ACTION_REPLAY;
+import static com.tuquyet.soundcloud.service.PlayBackGroundService.ACTION_REQUEST_TRACK;
 import static com.tuquyet.soundcloud.service.PlayBackGroundService.ACTION_SEEK;
+import static com.tuquyet.soundcloud.service.PlayBackGroundService.ACTION_SHUFFLE;
 import static com.tuquyet.soundcloud.service.PlayBackGroundService.EXTRA_CURRENT_PROGRESS;
 import static com.tuquyet.soundcloud.service.PlayBackGroundService.EXTRA_RETURN_TRACK;
 import static com.tuquyet.soundcloud.service.PlayBackGroundService.EXTRA_SEEK;
@@ -52,7 +56,9 @@ public class NavigationSongBar extends LinearLayout
     private Context mContext;
     private TrackModel mTrackModel;
     private View mRootView;
-    private ImageView mImgWaveformSmall;
+    private ImageView mImgReplay;
+    private ImageView mImgShuffle;
+    private ImageView mImgWaveform;
     private ImageView mImgPlay;
     private TextView mTxtTrackInfo;
     private SeekBar mSeekBar;
@@ -63,6 +69,8 @@ public class NavigationSongBar extends LinearLayout
     private Intent mIntent;
     private TrackReceiver mTrackReceiver;
     private boolean isPlaySongActivity;
+    private boolean mIsReplay;
+    private boolean mIsShuffle;
 
     public NavigationSongBar(Context context) {
         super(context);
@@ -100,14 +108,17 @@ public class NavigationSongBar extends LinearLayout
         mProgressBarSmall.setMax(SEEK_BAR_MAX);
         mImgPlay = (ImageView) findViewById(R.id.image_view_play);
         mTxtTrackInfo = (TextView) findViewById(R.id.text_view_track_info_navi);
+        mImgReplay = (ImageView) findViewById(R.id.image_view_replay);
+        mImgShuffle = (ImageView) findViewById(R.id.image_view_shuffle);
+        mImgWaveform = (ImageView) findViewById(R.id.image_view_waveform);
 
         findViewById(R.id.image_view_previous).setOnClickListener(this);
         findViewById(R.id.image_view_play).setOnClickListener(this);
         findViewById(R.id.image_view_next).setOnClickListener(this);
-        findViewById(R.id.image_view_waveform).setOnClickListener(this);
-        findViewById(R.id.image_view_replay).setOnClickListener(this);
+        mImgWaveform.setOnClickListener(this);
         findViewById(R.id.image_view_open_play_song_act).setOnClickListener(this);
-        findViewById(R.id.image_view_shuffle).setOnClickListener(this);
+        mImgReplay.setOnClickListener(this);
+        mImgShuffle.setOnClickListener(this);
 
         if (mContext instanceof PlaySongActivity) {
             isPlaySongActivity = true;
@@ -123,7 +134,14 @@ public class NavigationSongBar extends LinearLayout
         }
         if (mTrackModel == null) {
             mRootView.setVisibility(GONE);
+            requestTrackFromService();
         }
+    }
+
+    private void requestTrackFromService() {
+        mIntent = new Intent(mContext, PlayBackGroundService.class);
+        mIntent.setAction(ACTION_REQUEST_TRACK);
+        mContext.startService(mIntent);
     }
 
     private void createBroadcast() {
@@ -157,8 +175,36 @@ public class NavigationSongBar extends LinearLayout
                 mContext.startService(mIntent);
                 break;
             case R.id.image_view_waveform:
-                if (mIsShowingWaveform) hideWaveform();
-                else showWaveform();
+                if (mIsShowingWaveform) {
+                    hideWaveform();
+                } else {
+                    showWaveform();
+
+                }
+                break;
+            case R.id.image_view_replay:
+                mIntent = new Intent(mContext, PlayBackGroundService.class);
+                mIntent.setAction(ACTION_REPLAY);
+                mContext.startService(mIntent);
+                if (mIsReplay) {
+                    mIsReplay = false;
+                    mImgReplay.setImageResource(R.drawable.ic_replay_flat);
+                } else {
+                    mIsReplay = true;
+                    mImgReplay.setImageResource(R.drawable.ic_replay_choosen_flat);
+                }
+                break;
+            case R.id.image_view_shuffle:
+                mIntent = new Intent(mContext, PlayBackGroundService.class);
+                mIntent.setAction(ACTION_SHUFFLE);
+                mContext.startService(mIntent);
+                if (mIsShuffle) {
+                    mIsShuffle = false;
+                    mImgShuffle.setImageResource(R.drawable.ic_shuffle_flat);
+                } else {
+                    mIsShuffle = true;
+                    mImgShuffle.setImageResource(R.drawable.ic_shuffle_choosen_flat);
+                }
                 break;
             default:
                 break;
@@ -275,6 +321,7 @@ public class NavigationSongBar extends LinearLayout
         if (mIsShowingWaveform) {
             mRelativeLayoutWaveform.startAnimation(mAnimationHideWaveform);
             mIsShowingWaveform = false;
+            mImgWaveform.setImageResource(R.drawable.ic_waveform_flat);
         }
     }
 
@@ -282,6 +329,7 @@ public class NavigationSongBar extends LinearLayout
         if (!mIsShowingWaveform) {
             mRelativeLayoutWaveform.startAnimation(mAnimationShowWaveform);
             mIsShowingWaveform = true;
+            mImgWaveform.setImageResource(R.drawable.ic_waveform_choosen_flat);
         }
     }
 
@@ -304,8 +352,10 @@ public class NavigationSongBar extends LinearLayout
     @Override
     public void onReturnTrackFromService(Intent intent) {
         this.mTrackModel = (TrackModel) intent.getSerializableExtra(EXTRA_RETURN_TRACK);
+        if (mTrackModel == null) return;
         if (mRootView.getVisibility() == GONE && mTrackModel != null) {
             mRootView.setVisibility(VISIBLE);
+            Log.d(TAG, "onReturnTrackFromService: " + getContext());
         }
         loadWaveform();
         loadTrackInfo();

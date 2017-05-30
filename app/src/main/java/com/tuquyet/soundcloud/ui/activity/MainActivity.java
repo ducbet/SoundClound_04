@@ -59,48 +59,48 @@ public class MainActivity extends AppCompatActivity {
     //Add pages
     private void addPages(ViewPager vp) {
         FragmentAdapter adapter = new FragmentAdapter(getSupportFragmentManager());
-        adapter.addFragment(new InfoFragment(), getString(R.string.user_info));
-        adapter.addFragment(new TracksFragment(), getString(R.string.tracks));
         adapter.addFragment(new PlaylistsFragment(), getString(R.string.playlists));
+        adapter.addFragment(new TracksFragment(), getString(R.string.tracks));
         adapter.addFragment(new FollowingsFragment(), getString(R.string.following));
+        adapter.addFragment(new InfoFragment(), getString(R.string.user_info));
         //Set Adapter
         vp.setAdapter(adapter);
     }
 
     private void loadImage(String url, ImageView imgTarget) {
         Glide.with(MainActivity.this)
-            .load(url)
-            .centerCrop()
-            .error(R.drawable.soundcloud)
-            .placeholder(R.mipmap.ic_launcher_round)
-            .into(imgTarget);
+                .load(url)
+                .centerCrop()
+                .error(R.drawable.soundcloud)
+                .placeholder(R.mipmap.ic_launcher_round)
+                .into(imgTarget);
     }
 
     private void getUser() {
         mService.getUser(USER_ID, API_KEY)
-            .enqueue(new Callback<UserModel>() {
-                @Override
-                public void onResponse(Call<UserModel> call,
-                                       Response<UserModel> response) {
-                    if (response != null) {
-                        mUserModel = response.body();
-                        loadData();
+                .enqueue(new Callback<UserModel>() {
+                    @Override
+                    public void onResponse(Call<UserModel> call,
+                                           Response<UserModel> response) {
+                        if (response != null) {
+                            mUserModel = response.body();
+                            loadData();
+                        }
                     }
-                }
 
-                private void loadData() {
-                    loadImage(mUserModel.getAvatarUrl(), mImageMyAvatar);
-                    mTextMyUserName.setText(mUserModel.getUsername());
-                    mTextMyFullName.setText(mUserModel.getFullName());
-                    mTextMyCity.setText(mUserModel.getCity() + ",");
-                    mTextMyCountry.setText(mUserModel.getCountry());
-                }
+                    private void loadData() {
+                        loadImage(mUserModel.getAvatarUrl(), mImageMyAvatar);
+                        mTextMyUserName.setText(mUserModel.getUsername());
+                        mTextMyFullName.setText(mUserModel.getFullName());
+                        mTextMyCity.setText(mUserModel.getCity() + ",");
+                        mTextMyCountry.setText(mUserModel.getCountry());
+                    }
 
-                @Override
-                public void onFailure(Call<UserModel> call, Throwable t) {
-                    Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_SHORT)
-                        .show();
-                }
-            });
+                    @Override
+                    public void onFailure(Call<UserModel> call, Throwable t) {
+                        Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_SHORT)
+                                .show();
+                    }
+                });
     }
 }

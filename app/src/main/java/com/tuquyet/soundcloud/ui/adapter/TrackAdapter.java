@@ -120,8 +120,8 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.ViewHolder> 
             Glide.with(mContext)
                 .load(trackItem.getArtworkUrl())
                 .centerCrop()
-                .error(R.mipmap.ic_launcher)
-                .placeholder(R.mipmap.ic_launcher_round)
+                .error(R.drawable.soundcloud)
+                .placeholder(R.drawable.soundcloud)
                 .into(mImageTrackAvatar);
         }
 

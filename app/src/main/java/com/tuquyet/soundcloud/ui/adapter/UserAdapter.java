@@ -84,8 +84,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
             Glide.with(mContext)
                     .load(userItem.getAvatarUrl())
                     .centerCrop()
-                    .error(R.mipmap.ic_launcher)
-                    .placeholder(R.mipmap.ic_launcher_round)
+                    .error(R.drawable.soundcloud)
+                    .placeholder(R.drawable.soundcloud)
                     .into(mImageUserAvatar);
         }
     }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:id="@+id/linear_info"
-              xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/linear_info"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:layout_margin="@dimen/dp_10"
@@ -20,6 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:text="@string/user_name"
+            android:textColor="@android:color/white"
             android:textSize="@dimen/dp_20"
             android:textStyle="bold"
             />
@@ -29,6 +30,7 @@
             android:layout_width="@dimen/dp_0"
             android:layout_height="wrap_content"
             android:layout_weight="3"
+            android:textColor="@android:color/white"
             android:textSize="@dimen/dp_20"
             />
     </LinearLayout>
@@ -47,6 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:text="@string/full_name"
+            android:textColor="@android:color/white"
             android:textSize="@dimen/dp_20"
             android:textStyle="bold"
             />
@@ -56,6 +59,7 @@
             android:layout_width="@dimen/dp_0"
             android:layout_height="wrap_content"
             android:layout_weight="3"
+            android:textColor="@android:color/white"
             android:textSize="@dimen/dp_20"
             />
     </LinearLayout>
@@ -74,6 +78,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:text="@string/description"
+            android:textColor="@android:color/white"
             android:textSize="@dimen/dp_20"
             android:textStyle="bold"
             />
@@ -83,6 +88,7 @@
             android:layout_width="@dimen/dp_0"
             android:layout_height="wrap_content"
             android:layout_weight="3"
+            android:textColor="@android:color/white"
             android:textSize="@dimen/dp_20"
             />
     </LinearLayout>
@@ -101,6 +107,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:text="@string/country"
+            android:textColor="@android:color/white"
             android:textSize="@dimen/dp_20"
             android:textStyle="bold"
             />
@@ -110,6 +117,7 @@
             android:layout_width="@dimen/dp_0"
             android:layout_height="wrap_content"
             android:layout_weight="3"
+            android:textColor="@android:color/white"
             android:textSize="@dimen/dp_20"
             />
     </LinearLayout>
@@ -128,6 +136,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:text="@string/city"
+            android:textColor="@android:color/white"
             android:textSize="@dimen/dp_20"
             android:textStyle="bold"
             />
@@ -137,6 +146,7 @@
             android:layout_width="@dimen/dp_0"
             android:layout_height="wrap_content"
             android:layout_weight="3"
+            android:textColor="@android:color/white"
             android:textSize="@dimen/dp_20"
             />
     </LinearLayout>
@@ -155,6 +165,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:text="@string/tracks"
+            android:textColor="@android:color/white"
             android:textSize="@dimen/dp_20"
             android:textStyle="bold"
             />
@@ -164,6 +175,7 @@
             android:layout_width="@dimen/dp_0"
             android:layout_height="wrap_content"
             android:layout_weight="3"
+            android:textColor="@android:color/white"
             android:textSize="@dimen/dp_20"
             />
     </LinearLayout>
@@ -182,6 +194,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:text="@string/playlists"
+            android:textColor="@android:color/white"
             android:textSize="@dimen/dp_20"
             android:textStyle="bold"
             />
@@ -191,6 +204,7 @@
             android:layout_width="@dimen/dp_0"
             android:layout_height="wrap_content"
             android:layout_weight="3"
+            android:textColor="@android:color/white"
             android:textSize="@dimen/dp_20"
             />
     </LinearLayout>
@@ -209,6 +223,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:text="@string/follower"
+            android:textColor="@android:color/white"
             android:textSize="@dimen/dp_20"
             android:textStyle="bold"
             />
@@ -218,6 +233,7 @@
             android:layout_width="@dimen/dp_0"
             android:layout_height="wrap_content"
             android:layout_weight="3"
+            android:textColor="@android:color/white"
             android:textSize="@dimen/dp_20"
             />
     </LinearLayout>
@@ -236,6 +252,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:text="@string/following"
+            android:textColor="@android:color/white"
             android:textSize="@dimen/dp_20"
             android:textStyle="bold"
             />
@@ -245,6 +262,7 @@
             android:layout_width="@dimen/dp_0"
             android:layout_height="wrap_content"
             android:layout_weight="3"
+            android:textColor="@android:color/white"
             android:textSize="@dimen/dp_20"
             />
     </LinearLayout>

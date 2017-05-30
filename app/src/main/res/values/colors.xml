@@ -8,5 +8,5 @@
     <color name="color_green_accent_200">#B2FF59</color>
     <color name="color_grey_200">#efefef</color>
     <color name="color_gray_navi">#000</color>
-    <color name="colorTranscent_2">#4e000000</color>
+    <color name="color_black_transcent">#4e000000</color>
 </resources>

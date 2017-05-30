@@ -213,8 +213,7 @@ public class PlaySongActivity extends AppCompatActivity
         DownloadManager manager =
                 (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
         manager.enqueue(request);
-        int downloadCount = mTrackModel.getDownloadCount();
-        mTrackModel.setDownloadCount(downloadCount++);
+        mImgDownload.setImageResource(R.drawable.ic_file_download_green_24px);
     }
 
     @Override
@@ -251,6 +250,8 @@ public class PlaySongActivity extends AppCompatActivity
                         })
                         .setNegativeButton("NO", null);
                 aBuiler.create().show();
+                int downloadCount = mTrackModel.getDownloadCount();
+                mTrackModel.setDownloadCount(downloadCount++);
             } else {
                 ActivityCompat.requestPermissions(
                         PlaySongActivity.this,

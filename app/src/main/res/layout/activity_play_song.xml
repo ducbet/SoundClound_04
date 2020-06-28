@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/black_background_small"
+    android:orientation="vertical"
+    tools:context="com.tuquyet.soundcloud.ui.activity.PlaySongActivity">
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            >
+
+            <com.tuquyet.soundcloud.util.widget.SquareImageView
+                android:id="@+id/image_view_artwork"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                android:layout_centerInParent="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/sound_clound_2"/>
+
+            <com.tuquyet.soundcloud.util.widget.SquareImageView
+                android:id="@+id/image_view_turntable"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_centerInParent="true"
+                android:scaleType="fitCenter"
+                android:src="@drawable/turntable"/>
+
+            <ImageView
+                android:id="@+id/image_view_turntable_seek"
+                android:layout_width="90dp"
+                android:layout_height="180dp"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/turntable_seek"/>
+
+        </RelativeLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_black_transcent"
+        android:orientation="horizontal"
+        android:paddingTop="5dp">
+
+        <ImageView
+            android:id="@+id/image_view_favorite"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_30"
+            android:layout_marginLeft="40dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_favorite_white_24px"/>
+
+        <ImageView
+            android:id="@+id/image_view_download"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_30"
+            android:layout_marginRight="40dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_file_download_white_24px"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/text_view_track_info_play_act"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_black_transcent"
+        android:gravity="center_horizontal"
+        android:maxLines="3"
+        android:paddingTop="@dimen/dp_5"
+        android:text="@string/track_info"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/sp_20"
+        android:textStyle="bold|italic"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view_comment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/color_black_transcent"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"/>
+
+    <com.tuquyet.soundcloud.util.widget.NavigationSongBar
+        android:id="@+id/navigation_song_play_song_activity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</LinearLayout>
+

@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">SoundCloud</string>
+    <string name="track_info">TRACK INFO</string>
+    <string name="user_name">User name</string>
+    <string name="full_name">Full name</string>
+    <string name="description">Description</string>
+    <string name="country">Country</string>
+    <string name="city">City</string>
+    <string name="tracks">Tracks</string>
+    <string name="playlists">Playlists</string>
+    <string name="follower">Follower</string>
+    <string name="following">Following</string>
+    <string name="user_info">Infomation</string>
+    <string name="download_notification">Download from Souncloud</string>
+</resources>
